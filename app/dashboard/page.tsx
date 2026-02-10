@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { CalendarDays, Users, MapPin, Plus } from "lucide-react";
-import { Suspense } from "react";
 
 async function getUserEmail() {
   const supabase = await createClient();
@@ -20,12 +19,9 @@ export default function EventPlannerDashboard() {
       {/* Welcome Header */}
       <div className="flex flex-col gap-2">
         <h1 className="text-4xl font-bold">Event Planner</h1>
-        <p className="text-muted-foreground">
-          Welcome back, <Suspense fallback="loading..."><UserEmail /></Suspense>
-        </p>
       </div>
 
-      {/* Quick Stats */}
+      {/* Hard-coded Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatCard
           icon={<CalendarDays className="h-5 w-5" />}
@@ -114,9 +110,7 @@ function ActionCard({
 }) {
   return (
     <button className="border rounded-lg p-6 flex items-start gap-4 hover:bg-accent transition-colors text-left">
-      <div className="p-2 bg-primary/10 rounded-md text-primary">
-        {icon}
-      </div>
+      <div className="p-2 bg-primary/10 rounded-md text-primary">{icon}</div>
       <div className="flex flex-col gap-1">
         <h3 className="font-semibold">{title}</h3>
         <p className="text-sm text-muted-foreground">{description}</p>
