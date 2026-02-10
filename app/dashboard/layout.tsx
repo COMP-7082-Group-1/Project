@@ -1,7 +1,6 @@
-import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { ProfileDropdown } from "@/components/dashboard/profile-dropdown";
 import Link from "next/link";
-import { Suspense } from "react";
 
 export default function DashboardLayout({
   children,
@@ -16,9 +15,7 @@ export default function DashboardLayout({
             <div className="flex gap-5 items-center font-semibold">
               <Link href={"/dashboard"}>Event Planner</Link>
             </div>
-            <Suspense>
-              <AuthButton />
-            </Suspense>
+            <ProfileDropdown />
           </div>
         </nav>
         <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
