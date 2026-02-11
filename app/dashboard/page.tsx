@@ -41,13 +41,13 @@ export default function EventPlannerDashboard() {
             icon={<Plus className="h-5 w-5" />}
             title="Create New Event"
             description="Plan a new event from scratch"
-            href="/dashboard/events/"
+            href="/dashboard/events/new"
           />
           <ActionCard
             icon={<CalendarDays className="h-5 w-5" />}
             title="View Calendar"
             description="See all upcoming events"
-            href="/dashboard"
+            href="/dashboard/events"
           />
         </div>
       </div>
