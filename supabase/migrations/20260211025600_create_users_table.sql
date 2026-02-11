@@ -1,9 +1,8 @@
 CREATE TYPE user_role AS ENUM ('admin', 'customer');
 
 CREATE TABLE users (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email TEXT UNIQUE NOT NULL,
-  password TEXT NOT NULL,
   full_name TEXT NOT NULL,
   role user_role DEFAULT 'customer',
   updated_at TIMESTAMPTZ DEFAULT NOW(),
