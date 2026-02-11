@@ -1,5 +1,7 @@
 import { getUser } from "@/lib/auth";
 import { CalendarDays, Users, MapPin, Plus } from "lucide-react";
+import { ActionCard } from "@/components/dashboard/action-card";
+import { StatCard } from "@/components/dashboard/stat-card";
 
 export default function EventPlannerDashboard() {
   return (
@@ -33,17 +35,19 @@ export default function EventPlannerDashboard() {
 
       {/* Quick Actions */}
       <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold">Quick Actions</h2>
+        <h2 className="text-2xl font-semibold">Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <ActionCard
             icon={<Plus className="h-5 w-5" />}
             title="Create New Event"
             description="Plan a new event from scratch"
+            href="/dashboard/events/"
           />
           <ActionCard
             icon={<CalendarDays className="h-5 w-5" />}
             title="View Calendar"
             description="See all upcoming events"
+            href="/dashboard"
           />
         </div>
       </div>
@@ -56,53 +60,5 @@ export default function EventPlannerDashboard() {
         </div>
       </div>
     </div>
-  );
-}
-
-// async function UserEmail() {
-//   const user = await getUser();
-//   return <span className="font-medium">{user?.email}</span>;
-// }
-
-function StatCard({
-  icon,
-  title,
-  value,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  value: string;
-  description: string;
-}) {
-  return (
-    <div className="border rounded-lg p-6 flex flex-col gap-2">
-      <div className="flex items-center gap-2 text-muted-foreground">
-        {icon}
-        <span className="text-sm font-medium">{title}</span>
-      </div>
-      <div className="text-3xl font-bold">{value}</div>
-      <div className="text-sm text-muted-foreground">{description}</div>
-    </div>
-  );
-}
-
-function ActionCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <button className="border rounded-lg p-6 flex items-start gap-4 hover:bg-accent transition-colors text-left">
-      <div className="p-2 bg-primary/10 rounded-md text-primary">{icon}</div>
-      <div className="flex flex-col gap-1">
-        <h3 className="font-semibold">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
-    </button>
   );
 }
