@@ -1,17 +1,5 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { getUser } from "@/lib/auth";
 import { CalendarDays, Users, MapPin, Plus } from "lucide-react";
-
-async function getUserEmail() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error || !data?.user) {
-    redirect("/auth/login");
-  }
-
-  return data.user.email;
-}
 
 export default function EventPlannerDashboard() {
   return (
@@ -71,10 +59,10 @@ export default function EventPlannerDashboard() {
   );
 }
 
-async function UserEmail() {
-  const email = await getUserEmail();
-  return <span className="font-medium">{email}</span>;
-}
+// async function UserEmail() {
+//   const user = await getUser();
+//   return <span className="font-medium">{user?.email}</span>;
+// }
 
 function StatCard({
   icon,
