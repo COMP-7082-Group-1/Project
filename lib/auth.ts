@@ -1,3 +1,5 @@
+"use server";
+
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -9,6 +11,23 @@ export type User = {
   updated_at: string;
   created_at: string;
 };
+
+/**
+ * Log users out of their session
+ * Redirects to login page
+ */
+export async function logout() {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error("Logout error:", error);
+    throw new Error("Failed to logout");
+  }
+
+  redirect("/auth/login");
+}
 
 /**
  * Get the current authenticated user from the users table

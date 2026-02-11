@@ -10,14 +10,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User, Settings, LogOut } from "lucide-react";
+import { logout } from "@/lib/auth";
 
 export function ProfileDropdown() {
   const router = useRouter();
-
-  const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/auth/login");
-  };
 
   return (
     <DropdownMenu>
@@ -36,7 +32,10 @@ export function ProfileDropdown() {
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={handleLogout} className="text-red-600">
+        <DropdownMenuItem
+          onSelect={async () => await logout()}
+          className="text-red-600"
+        >
           <LogOut className="mr-2 h-4 w-4" />
           Logout
         </DropdownMenuItem>
