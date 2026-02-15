@@ -10,6 +10,7 @@ export default async function Home() {
   const user = data?.claims;
 
   // Redirect to dashboard if user is logged in
+  // test test
   if (user) {
     redirect("/dashboard");
   }
