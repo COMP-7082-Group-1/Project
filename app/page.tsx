@@ -12,7 +12,7 @@ export default async function Home() {
   // Redirect to dashboard if user is logged in
   // test test
   if (user) {
-    redirect("/dashboard");
+    redirect("/homepage");
   }
 
   return (
