@@ -2,8 +2,10 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Calendar, Sparkles, Users, BarChart3, ArrowRight, CheckCircle2 } from "lucide-react";
+import logo from "./logo.png";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -45,24 +47,40 @@ export default async function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/30">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-red-50/30">
       {/* NAV */}
       <nav className="sticky top-0 z-40 w-full border-b border-slate-200/60 bg-white/70 backdrop-blur">
-        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 to-slate-700 text-white shadow-sm">
-              <Calendar className="h-4 w-4" />
+        <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
+          <div className="flex items-center gap-4">
+            <div className="flex h-16 w-16 items-center">
+              <Image
+                src={logo}
+                alt="Event Planner Logo"
+                width={52}
+                height={52}
+                className="object-contain"
+                priority
+              />
             </div>
             <Link href="/" className="font-semibold tracking-tight text-slate-900">
-              Event Planner
+              Event Tap
             </Link>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button asChild size="sm" variant="outline" className="rounded-xl">
+          <div className="flex items-center gap-3">
+            <Button
+              asChild
+              size="sm"
+              variant="outline"
+              className="rounded-full border-slate-300 bg-white/80 px-5 text-slate-700 shadow-sm transition hover:border-red-300 hover:bg-red-50 hover:text-red-700"
+            >
               <Link href="/auth/login">Sign in</Link>
             </Button>
-            <Button asChild size="sm" className="rounded-xl">
+            <Button
+              asChild
+              size="sm"
+              className="rounded-full bg-gradient-to-r from-red-600 to-rose-500 px-5 text-white shadow-lg shadow-red-200 transition hover:from-red-700 hover:to-rose-600"
+            >
               <Link href="/auth/sign-up">Sign up</Link>
             </Button>
           </div>
@@ -71,18 +89,18 @@ export default async function Home() {
 
       {/* HERO */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-100/40 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-100/40 via-transparent to-transparent" />
 
         <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-14 sm:px-6 sm:pb-20 sm:pt-20">
           <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-7 inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-2 text-sm font-medium text-orange-700">
+            {/* <div className="mb-7 inline-flex items-center gap-2 rounded-full bg-red-100 px-4 py-2 text-sm font-medium text-red-700">
               <Sparkles className="h-4 w-4" />
               Simple RSVPs. Clean dashboards. Less stress.
-            </div>
+            </div> */}
 
             <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">
               Event planning,{" "}
-              <span className="bg-gradient-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-red-500 to-rose-500 bg-clip-text text-transparent">
                 simplified
               </span>
             </h1>
@@ -144,7 +162,7 @@ export default async function Home() {
 
               <div className="grid gap-6 sm:grid-cols-3">
                 <div className="rounded-2xl bg-gradient-to-br from-slate-800 to-slate-950 p-6 text-white">
-                  <Calendar className="mb-4 h-8 w-8 text-orange-400" />
+                  <Calendar className="mb-4 h-8 w-8 text-red-400" />
                   <p className="text-2xl font-bold">Sarah&apos;s Wedding</p>
                   <p className="mt-2 text-sm text-slate-300">June 15, 2026</p>
                   <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs text-white/90">
@@ -168,7 +186,7 @@ export default async function Home() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-gradient-to-br from-orange-500 to-rose-500 p-6 text-white">
+                <div className="rounded-2xl bg-gradient-to-br from-red-500 to-rose-500 p-6 text-white">
                   <CheckCircle2 className="mb-4 h-8 w-8" />
                   <p className="text-lg font-semibold">83% Response Rate</p>
                   <p className="mt-2 text-sm text-white/80">
@@ -199,7 +217,7 @@ export default async function Home() {
                 key={f.title}
                 className="rounded-2xl bg-slate-50 p-6 ring-1 ring-slate-200/60 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-200/60"
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-rose-500">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 to-rose-500">
                   <f.icon className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900">{f.title}</h3>
@@ -221,7 +239,7 @@ export default async function Home() {
           <div className="mt-12 grid gap-8 sm:grid-cols-3">
             {steps.map((s) => (
               <div key={s.number} className="text-center">
-                <div className="text-6xl font-bold text-orange-500/25">{s.number}</div>
+                <div className="text-6xl font-bold text-red-500/25">{s.number}</div>
                 <h3 className="mt-3 text-xl font-semibold">{s.title}</h3>
                 <p className="mt-2 text-slate-300">{s.desc}</p>
               </div>
@@ -233,19 +251,25 @@ export default async function Home() {
       {/* FOOTER */}
       <footer className="border-t border-slate-100 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6">
-          <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 to-slate-700 text-white">
-              <Calendar className="h-4 w-4" />
+          <div className="flex items-center gap-4">
+            <div className="flex h-16 w-16 items-center">
+              <Image
+                src={logo}
+                alt="Event Planner Logo"
+                width={52}
+                height={52}
+                className="object-contain"
+              />
             </div>
             <div className="leading-tight">
-              <p className="font-semibold text-slate-900">Event Planner</p>
+              <p className="font-semibold text-slate-900">Event Tap</p>
               <p className="text-xs text-slate-500">Plan smarter. Host happier.</p>
             </div>
           </div>
 
           <div className="flex items-center gap-6">
             <ThemeSwitcher />
-            <p className="text-xs text-slate-500">© {new Date().getFullYear()} Event Planner</p>
+            <p className="text-xs text-slate-500">© {new Date().getFullYear()} Event Tap</p>
           </div>
         </div>
       </footer>
