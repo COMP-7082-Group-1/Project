@@ -8,7 +8,7 @@ export async function getEvents() {
 
   const { data: events, error } = await supabase
     .from("events")
-    .select("*")
+    .select("*, guests(*)")
     .eq("owner_user_id", user.id)
     .order("created_at", { ascending: false });
 

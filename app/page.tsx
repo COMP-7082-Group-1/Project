@@ -9,7 +9,6 @@ export default async function Home() {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
-  // Redirect to dashboard if user is logged in
   if (user) {
     redirect("/dashboard");
   }
