@@ -9,6 +9,7 @@ import {
   Mail,
   Settings,
   HelpCircle,
+  PlusCircle,
 } from "lucide-react";
 import { DashboardSidebarItem } from "./dashboard-sidebar-item";
 
@@ -26,6 +27,11 @@ export const DashboardSidebar = () => {
         label: "My Events",
         href: "/dashboard/events",
         icon: <PartyPopper className="h-4 w-4" />,
+      },
+      {
+        label: "Create a New Event",
+        href: "/dashboard/events/new",
+        icon: <PlusCircle className="h-4 w-4" />,
       },
       {
         label: "Guest List",
