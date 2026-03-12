@@ -1,11 +1,12 @@
-import { getEvents } from "@/lib/data/event";
+import Link from "next/link";
+import { getOwnedEvents } from "@/lib/data/eventOwner";
 
 export async function EventsManager() {
-  const events = await getEvents();
+  const events = await getOwnedEvents();
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-2xl font-semibold">Your Events</h2>
+      <h2 className="text-2xl font-semibold">Click to Edit Your Events</h2>
 
       {!events || events.length === 0 ? (
         <div className="border rounded-lg p-8 text-center text-muted-foreground">
@@ -14,10 +15,20 @@ export async function EventsManager() {
       ) : (
         <div className="grid grid-cols-1 gap-4">
           {events.map((event) => (
-            <div
+            <Link
               key={event.id}
+              href={`/dashboard/events/${event.id}/edit`}
               className="border rounded-lg p-6 flex flex-col gap-2 hover:bg-accent transition-colors"
-            ></div>
+            >
+              <h3 className="text-xl font-semibold">
+                {event.title} on{" "}
+                {new Date(event.start_time).toLocaleDateString(undefined, {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </h3>
+            </Link>
           ))}
         </div>
       )}
