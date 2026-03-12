@@ -10,7 +10,6 @@ export async function getEvents() {
     .from("events")
     .select("*, guests(*)")
     .eq("owner_user_id", user.id)
-    .order("created_at", { ascending: false });
 
   if (ownedError) {
     console.error("Error fetching owned events:", ownedError);
@@ -32,5 +31,7 @@ export async function getEvents() {
     .map((g) => g.events as Record<string, any>)
     .filter((e) => e && !ownedIds.has(e.id));
 
-  return [...(ownedEvents ?? []), ...guestEvents];
+  return [...(ownedEvents ?? []), ...guestEvents].sort(
+    (a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
+  );
 }
