@@ -33,21 +33,21 @@ export const DashboardSidebar = () => {
         href: "/dashboard/events/new",
         icon: <PlusCircle className="h-4 w-4" />,
       },
-      {
-        label: "Guest List",
-        href: "/dashboard/guests",
-        icon: <Users className="h-4 w-4" />,
-      },
-      {
-        label: "Invitations",
-        href: "/dashboard/invitations",
-        icon: <Mail className="h-4 w-4" />,
-      },
-      {
-        label: "Settings",
-        href: "/dashboard/settings",
-        icon: <Settings className="h-4 w-4" />,
-      },
+      // {
+      //   label: "Guest List",
+      //   href: "/dashboard/guests",
+      //   icon: <Users className="h-4 w-4" />,
+      // },
+      // {
+      //   label: "Invitations",
+      //   href: "/dashboard/invitations",
+      //   icon: <Mail className="h-4 w-4" />,
+      // },
+      // {
+      //   label: "Settings",
+      //   href: "/dashboard/settings",
+      //   icon: <Settings className="h-4 w-4" />,
+      // },
     ],
     []
   );
