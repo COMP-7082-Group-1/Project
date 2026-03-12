@@ -19,7 +19,7 @@ export async function getEvents() {
 
   const { data: guestEntries, error: guestError } = await supabase
     .from("guests")
-    .select("events(*, guests(*))")
+    .select("*, events(*)")
     .eq("user_id", user.id);
 
   if (guestError) {
