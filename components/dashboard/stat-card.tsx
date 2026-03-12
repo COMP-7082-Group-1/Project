@@ -29,9 +29,9 @@ export function StatCard({
           {icon}
           <span className="text-3xl font-bold text-foreground">{title}</span>
         </div>
-        <div className="text-sm text-muted-foreground">Guests: {guests}</div>
         <div className="text-sm text-muted-foreground">{description}</div>
-        <div className="text-sm text-muted-foreground">Date: {date}</div>
+        <div className="text-sm text-muted-foreground">Guests: {guests}</div>
+        <div className="text-sm text-muted-foreground">{date}</div>
       </div>
 
       {/* Right */}
