@@ -1,22 +1,16 @@
-import { getUser } from "@/lib/auth";
-import { CalendarDays, Users, MapPin, Plus } from "lucide-react";
-import { ActionCard } from "@/components/dashboard/action-card";
+import { CalendarDays } from "lucide-react";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { getEvents } from "@/lib/data/event";
+import { Suspense } from "react";
 
-export default async function EventPlannerDashboard() {
+async function EventsList() {
   const events = (await getEvents()) || [];
-  events.forEach((event) => console.log(event.guests));
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-8">
-      {/* Welcome Header */}
-      <div className="flex flex-col gap-2">
-        <h1 className="text-4xl font-bold">All My Events</h1>
-      </div>
-
+    <>
       {events.map((event) => (
         <StatCard
+          key={event.id}
           icon={<CalendarDays className="h-5 w-5" />}
           title={event.title}
           guests={event.guests.length.toString()}
@@ -38,6 +32,20 @@ export default async function EventPlannerDashboard() {
           maybe={event.guests.filter((g) => g.rsvp_status === "maybe").length}
         />
       ))}
+    </>
+  );
+}
+
+export default function EventPlannerDashboard() {
+  return (
+    <div className="flex-1 w-full flex flex-col gap-8">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-4xl font-bold">All My Events</h1>
+      </div>
+
+      <Suspense fallback={<p className="text-muted-foreground">Loading events...</p>}>
+        <EventsList />
+      </Suspense>
     </div>
   );
 }
