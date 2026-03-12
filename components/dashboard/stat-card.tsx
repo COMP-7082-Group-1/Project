@@ -27,9 +27,9 @@ export function StatCard({
       <div className="flex flex-col gap-2 flex-1">
         <div className="flex items-center gap-2 text-muted-foreground">
           {icon}
-          <span className="text-sm font-medium">{title}</span>
+          <span className="text-3xl font-bold text-foreground">{title}</span>
         </div>
-        <div className="text-3xl font-bold">Guests: {guests}</div>
+        <div className="text-sm text-muted-foreground">Guests: {guests}</div>
         <div className="text-sm text-muted-foreground">{description}</div>
         <div className="text-sm text-muted-foreground">Date: {date}</div>
       </div>
