@@ -29,7 +29,8 @@ export default async function EventPage({
       <p className="text-muted-foreground">
         {`${event.city} ${event.state} ${event.postal_code} ${event.country}`}{" "}
       </p>
-      <p className="font-semibold">Guests</p>
+      <br></br>
+      <p className="text-2xl font-semibold">Guest List</p>
 
       <table className="w-full text-sm border-collapse">
         <thead>
@@ -48,11 +49,14 @@ export default async function EventPage({
               <td className="py-2 pr-4">{guest.rsvp_status ?? "—"}</td>
               <td className="py-2 pr-4">
                 {guest.rsvp_response_time
-                  ? new Date(guest.rsvp_response_time).toLocaleDateString(undefined, {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })
+                  ? new Date(guest.rsvp_response_time).toLocaleDateString(
+                      undefined,
+                      {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      },
+                    )
                   : "—"}
               </td>
             </tr>
