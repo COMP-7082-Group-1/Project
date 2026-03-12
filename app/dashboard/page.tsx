@@ -16,8 +16,8 @@ async function EventsList() {
             icon={<CalendarDays className="h-5 w-5" />}
             title={event.title}
             guests={event.guests.length.toString()}
-            description={event.description}
-            location={`${event.city} ${event.state} ${event.postal_code} ${event.country}`} 
+            description={event.description.slice(0, 100) + (event.description.length > 100 ? "..." : "")}
+            location={`${event.city} ${event.state} ${event.postal_code} ${event.country}`}
             date={new Date(event.start_time).toLocaleDateString(undefined, {
               month: "short",
               day: "numeric",
