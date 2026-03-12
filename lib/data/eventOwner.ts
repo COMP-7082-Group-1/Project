@@ -1,5 +1,3 @@
-// fetch events where the user is an owner
-
 import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
