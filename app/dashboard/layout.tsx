@@ -1,5 +1,6 @@
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { ProfileDropdown } from "@/components/dashboard/profile-dropdown";
+import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
 import Link from "next/link";
 import Image from "next/image";
 import { Plus } from "lucide-react";
@@ -52,8 +53,9 @@ export default function DashboardLayout({
           </div>
         </header>
 
-        <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6">
-          <div className="flex-1 rounded-[2rem] border border-slate-200/70 bg-white/85 p-6 shadow-xl shadow-slate-200/50 backdrop-blur sm:p-8">
+        <div className="flex flex-1 overflow-hidden">
+          <DashboardSidebar />
+          <div className="flex-1  border border-slate-200/70 bg-white/85 p-6 shadow-xl shadow-slate-200/50 backdrop-blur sm:p-8">
             {children}
           </div>
         </div>
@@ -87,7 +89,8 @@ export default function DashboardLayout({
             </div>
           </div>
         </footer>
-      </div>
-    </main>
-  );
+</div>
+  </main>
+    );
 }
+
