@@ -2,6 +2,7 @@ import { CalendarDays } from "lucide-react";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { getEvents } from "@/lib/data/event";
 import { Suspense } from "react";
+import Link from "next/link";
 
 async function EventsList() {
   const events = (await getEvents()) || [];
@@ -9,28 +10,30 @@ async function EventsList() {
   return (
     <>
       {events.map((event) => (
-        <StatCard
-          key={event.id}
-          icon={<CalendarDays className="h-5 w-5" />}
-          title={event.title}
-          guests={event.guests.length.toString()}
-          description={event.description}
-          date={new Date(event.start_time).toLocaleDateString(undefined, {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })}
-          invited={
-            event.guests.filter((g) => g.rsvp_status === "pending").length
-          }
-          accepted={
-            event.guests.filter((g) => g.rsvp_status === "accepted").length
-          }
-          declined={
-            event.guests.filter((g) => g.rsvp_status === "declined").length
-          }
-          maybe={event.guests.filter((g) => g.rsvp_status === "maybe").length}
-        />
+        <Link key={event.id} href={`/dashboard/events/${event.id}/`}>
+          <StatCard
+            key={event.id}
+            icon={<CalendarDays className="h-5 w-5" />}
+            title={event.title}
+            guests={event.guests.length.toString()}
+            description={event.description}
+            date={new Date(event.start_time).toLocaleDateString(undefined, {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+            invited={
+              event.guests.filter((g) => g.rsvp_status === "pending").length
+            }
+            accepted={
+              event.guests.filter((g) => g.rsvp_status === "accepted").length
+            }
+            declined={
+              event.guests.filter((g) => g.rsvp_status === "declined").length
+            }
+            maybe={event.guests.filter((g) => g.rsvp_status === "maybe").length}
+          />
+        </Link>
       ))}
     </>
   );
@@ -43,7 +46,9 @@ export default function EventPlannerDashboard() {
         <h1 className="text-4xl font-bold">All My Events</h1>
       </div>
 
-      <Suspense fallback={<p className="text-muted-foreground">Loading events...</p>}>
+      <Suspense
+        fallback={<p className="text-muted-foreground">Loading events...</p>}
+      >
         <EventsList />
       </Suspense>
     </div>
