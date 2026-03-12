@@ -8,6 +8,7 @@ interface StatCardProps {
   accepted: number;
   declined: number;
   maybe: number;
+  location: string;
 }
 
 export function StatCard({
@@ -20,6 +21,7 @@ export function StatCard({
   accepted,
   declined,
   maybe,
+  location,
 }: StatCardProps) {
   return (
     <div className="border rounded-lg p-6 flex flex-row gap-6 hover:bg-accent transition-colors">
@@ -32,6 +34,7 @@ export function StatCard({
         <div className="text-sm text-muted-foreground">{description}</div>
         <div className="text-sm text-muted-foreground">Guests: {guests}</div>
         <div className="text-sm text-muted-foreground">{date}</div>
+        <div className="text-sm text-muted-foreground">{location}</div>
       </div>
 
       {/* Right */}

@@ -17,6 +17,7 @@ async function EventsList() {
             title={event.title}
             guests={event.guests.length.toString()}
             description={event.description}
+            location={`${event.city} ${event.state} ${event.postal_code} ${event.country}`} 
             date={new Date(event.start_time).toLocaleDateString(undefined, {
               month: "short",
               day: "numeric",
