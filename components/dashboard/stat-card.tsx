@@ -1,19 +1,50 @@
 interface StatCardProps {
   icon: React.ReactNode;
   title: string;
-  value: string;
+  guests: string;
   description: string;
+  date: string;
+  invited: number;
+  accepted: number;
+  declined: number;
+  maybe: number;
 }
 
-export function StatCard({ icon, title, value, description }: StatCardProps) {
+export function StatCard({
+  icon,
+  title,
+  guests,
+  description,
+  date,
+  invited,
+  accepted,
+  declined,
+  maybe,
+}: StatCardProps) {
   return (
-    <div className="border rounded-lg p-6 flex flex-col gap-2">
-      <div className="flex items-center gap-2 text-muted-foreground">
-        {icon}
-        <span className="text-sm font-medium">{title}</span>
+    <div className="border rounded-lg p-6 flex flex-row gap-6 hover:bg-accent transition-colors">
+      {/* Left */}
+      <div className="flex flex-col gap-2 flex-1">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          {icon}
+          <span className="text-sm font-medium">{title}</span>
+        </div>
+        <div className="text-3xl font-bold">Guests: {guests}</div>
+        <div className="text-sm text-muted-foreground">{description}</div>
+        <div className="text-sm text-muted-foreground">Date: {date}</div>
       </div>
-      <div className="text-3xl font-bold">{value}</div>
-      <div className="text-sm text-muted-foreground">{description}</div>
+
+      {/* Right */}
+      <div className="flex flex-col gap-2 flex-1">
+        <div className="text-lg text-muted-foreground">Invited: {invited}</div>
+        <div className="text-lg text-muted-foreground">
+          Accepted: {accepted}
+        </div>
+        <div className="text-lg text-muted-foreground">
+          Declined: {declined}
+        </div>
+        <div className="text-lg text-muted-foreground">Maybe: {maybe}</div>
+      </div>
     </div>
   );
 }
