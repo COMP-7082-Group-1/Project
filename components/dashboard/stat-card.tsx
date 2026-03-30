@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface StatCardProps {
   icon: React.ReactNode;
   title: string;
@@ -9,6 +11,8 @@ interface StatCardProps {
   declined: number;
   maybe: number;
   location: string;
+  href?: string;
+  action?: React.ReactNode;
 }
 
 export function StatCard({
@@ -22,9 +26,11 @@ export function StatCard({
   declined,
   maybe,
   location,
+  href,
+  action,
 }: StatCardProps) {
-  return (
-    <div className="border rounded-lg p-6 flex flex-row gap-6 hover:bg-accent transition-colors">
+  const content = (
+    <div className="flex flex-row gap-6">
       {/* Left */}
       <div className="flex flex-col gap-2 flex-1">
         <div className="flex items-center gap-2 text-muted-foreground">
@@ -47,6 +53,23 @@ export function StatCard({
           Declined: {declined}
         </div>
         <div className="text-lg text-muted-foreground">Maybe: {maybe}</div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="border rounded-lg p-6 transition-colors hover:bg-accent">
+      <div className="flex items-start gap-4">
+        <div className="min-w-0 flex-1">
+          {href ? (
+            <Link href={href} className="block">
+              {content}
+            </Link>
+          ) : (
+            content
+          )}
+        </div>
+        <div className="shrink-0">{action}</div>
       </div>
     </div>
   );
