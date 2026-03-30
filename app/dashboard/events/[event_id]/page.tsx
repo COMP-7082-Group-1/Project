@@ -1,3 +1,6 @@
+import { Download } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import { getEventByID } from "@/lib/data/eventByID";
 import { getGuestsByEventID } from "@/lib/data/guestsByEventID";
 
@@ -30,7 +33,18 @@ export default async function EventPage({
         {`${event.city} ${event.state} ${event.postal_code} ${event.country}`}{" "}
       </p>
       <br></br>
-      <p className="text-2xl font-semibold">Guest List</p>
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-2xl font-semibold">Guest List</p>
+        <Button asChild variant="outline">
+          <a
+            href={`/api/events/${event.id}/guests-csv`}
+            download={`${event.title}-guests.csv`}
+          >
+            <Download className="h-4 w-4" />
+            Download CSV
+          </a>
+        </Button>
+      </div>
 
       <table className="w-full text-sm border-collapse">
         <thead>
