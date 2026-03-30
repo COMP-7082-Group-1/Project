@@ -1,4 +1,5 @@
 import { CalendarDays } from "lucide-react";
+import { EditEventButton } from "@/components/dashboard/edit-event-button";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { DeleteEventButton } from "@/components/dashboard/delete-event-button";
 import { requireUser } from "@/lib/auth";
@@ -47,7 +48,13 @@ async function EventsList() {
           href={`/dashboard/events/${event.id}/`}
           action={
             event.owner_user_id === user.id ? (
-              <DeleteEventButton eventId={event.id} eventTitle={event.title} />
+              <div className="flex items-center gap-1">
+                <EditEventButton eventId={event.id} eventTitle={event.title} />
+                <DeleteEventButton
+                  eventId={event.id}
+                  eventTitle={event.title}
+                />
+              </div>
             ) : null
           }
         />

@@ -1,4 +1,5 @@
-import { Download } from "lucide-react";
+import Link from "next/link";
+import { Download, Pencil } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { getEventByID } from "@/lib/data/eventByID";
@@ -20,18 +21,28 @@ export default async function EventPage({
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-2xl font-semibold">{event.title}</h2>
-      <p className="text-muted-foreground">
-        {new Date(event.start_time).toLocaleDateString(undefined, {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        })}
-      </p>
-      <p className="text-muted-foreground">{event.description}</p>
-      <p className="text-muted-foreground">
-        {`${event.city} ${event.state} ${event.postal_code} ${event.country}`}{" "}
-      </p>
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col gap-4">
+          <h2 className="text-2xl font-semibold">{event.title}</h2>
+          <p className="text-muted-foreground">
+            {new Date(event.start_time).toLocaleDateString(undefined, {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </p>
+          <p className="text-muted-foreground">{event.description}</p>
+          <p className="text-muted-foreground">
+            {`${event.city} ${event.state} ${event.postal_code} ${event.country}`}{" "}
+          </p>
+        </div>
+        <Button asChild variant="outline">
+          <Link href={`/dashboard/events/${event.id}/edit`}>
+            <Pencil className="h-4 w-4" />
+            Edit Event
+          </Link>
+        </Button>
+      </div>
       <br></br>
       <div className="flex items-center justify-between gap-4">
         <p className="text-2xl font-semibold">Guest List</p>
