@@ -10,6 +10,7 @@ import { getTemplateComponent } from "@/lib/events/template-registry";
 import GuestListForm, {
   type GuestFormItem,
 } from "@/components/events/guest-list-form";
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import type {
   EventTemplateData,
@@ -208,10 +209,6 @@ useEffect(() => {
 
     setGuestListError("");
     return true;
-  };
-
-  const isValidEmail = (value: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   };
 
   const isValidUrl = (value: string) => {
@@ -463,32 +460,30 @@ router.replace("/dashboard/events");
       )}
 
       <div className="mt-10 flex items-center justify-between border-t pt-6">
-        <button
+        <Button
           type="button"
           onClick={prevStep}
+          variant="outline"
           disabled={currentStep === 1 || uploadingImage || submitting}
-          className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
         >
           Back
-        </button>
+        </Button>
         {currentStep < 4 ? (
-          <button
+          <Button
             type="button"
             onClick={nextStep}
             disabled={uploadingImage || submitting}
-            className="rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Continue
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             type="button"
             onClick={handleCreateEvent}
             disabled={submitting || uploadingImage}
-            className="rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {submitting ? "Publishing..." : "Publish Event"}
-          </button>
+          </Button>
         )}
       </div>
     </div>

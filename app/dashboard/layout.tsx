@@ -44,7 +44,7 @@ export default function DashboardLayout({
               <Button
                 asChild
                 size="sm"
-                className="hidden rounded-full bg-[#c8242b] px-5 text-white shadow-lg shadow-[#c8242b]/20 transition hover:bg-[#af1f25] sm:inline-flex"
+                className="hidden sm:inline-flex"
               >
                 <Link href="/dashboard/events/new">
                   <Plus className="h-4 w-4" />

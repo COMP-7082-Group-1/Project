@@ -1,6 +1,7 @@
 "use client";
 
 import { Trash2, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export type GuestFormItem = {
   full_name: string;
@@ -72,28 +73,23 @@ export default function GuestListForm({
             </div>
 
             <div className="flex items-end">
-              <button
-                type="button"
+              <Button
                 onClick={() => onRemoveGuest(index)}
+                variant="outline"
                 disabled={guests.length === 1}
-                className="inline-flex h-[50px] items-center justify-center rounded-lg border border-border px-4 text-sm font-medium transition hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Remove
-              </button>
+              </Button>
             </div>
           </div>
         ))}
       </div>
 
-      <button
-        type="button"
-        onClick={onAddGuest}
-        className="inline-flex items-center rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition hover:opacity-90"
-      >
+      <Button type="button" onClick={onAddGuest}>
         <Plus className="mr-2 h-4 w-4" />
         Add Guest
-      </button>
+      </Button>
     </section>
   );
 }

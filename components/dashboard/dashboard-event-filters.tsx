@@ -1,7 +1,7 @@
 "use client";
 
 import { useDeferredValue, useMemo, useState } from "react";
-import { CalendarDays, Search } from "lucide-react";
+import { CalendarDays, ChevronDown, Search } from "lucide-react";
 
 import { DeleteEventButton } from "@/components/dashboard/delete-event-button";
 import { EditEventButton } from "@/components/dashboard/edit-event-button";
@@ -100,25 +100,28 @@ export function DashboardEventFilters({
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search by event name or location"
-              className="w-full rounded-full border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition focus:border-[#c8242b]/40 focus:bg-white"
+              className="ui-pill-control w-full bg-slate-50 pl-11 text-slate-900"
             />
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
-            <select
-              value={ownershipFilter}
-              onChange={(event) =>
-                setOwnershipFilter(event.target.value as OwnershipFilter)
-              }
-              className="rounded-full border border-slate-200 bg-white py-3 pl-0 pr-0 text-sm text-slate-700 outline-none transition focus:border-[#c8242b]/40"
-              aria-label="Filter by event ownership"
-            >
-              {ownershipOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            <div className="relative inline-flex">
+              <select
+                value={ownershipFilter}
+                onChange={(event) =>
+                  setOwnershipFilter(event.target.value as OwnershipFilter)
+                }
+                className="ui-pill-control appearance-none pr-10"
+                aria-label="Filter by event ownership"
+              >
+                {ownershipOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+            </div>
           </div>
         </div>
       </section>

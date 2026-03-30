@@ -72,15 +72,11 @@ export default async function Home() {
               asChild
               size="sm"
               variant="outline"
-              className="rounded-full border-slate-300 bg-white/80 px-5 text-slate-700 shadow-sm transition hover:border-red-300 hover:bg-red-50 hover:text-red-700"
+              className="bg-white/90"
             >
               <Link href="/auth/login">Sign in</Link>
             </Button>
-            <Button
-              asChild
-              size="sm"
-              className="rounded-full bg-gradient-to-r from-red-600 to-rose-500 px-5 text-white shadow-lg shadow-red-200 transition hover:from-red-700 hover:to-rose-600"
-            >
+            <Button asChild size="sm">
               <Link href="/auth/sign-up">Sign up</Link>
             </Button>
           </div>
@@ -114,7 +110,7 @@ export default async function Home() {
               <Button
                 asChild
                 size="lg"
-                className="w-full rounded-xl px-8 py-6 text-lg shadow-lg shadow-slate-900/10 sm:w-auto"
+                className="w-full sm:w-auto"
               >
                 <Link href="/auth/sign-up" className="flex items-center gap-2">
                   Get Started
@@ -126,7 +122,7 @@ export default async function Home() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="w-full rounded-xl border-2 px-8 py-6 text-lg sm:w-auto"
+                className="w-full bg-white/90 sm:w-auto"
               >
                 <Link href="/auth/login">Sign In</Link>
               </Button>
