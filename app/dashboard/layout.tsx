@@ -1,9 +1,10 @@
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import Image from "next/image";
+import Link from "next/link";
+import { Plus } from "lucide-react";
+
 import { ProfileDropdown } from "@/components/dashboard/profile-dropdown";
 import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
-import Link from "next/link";
-import Image from "next/image";
-import { Plus } from "lucide-react";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Button } from "@/components/ui/button";
 import logo from "../logo.png";
 
@@ -13,35 +14,37 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-red-50/30">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-100/30 via-transparent to-transparent" />
-
+    <main className="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_22%,#fff7f7_100%)]">
       <div className="relative flex min-h-screen flex-col">
-        <header className="sticky top-0 z-40 border-b border-slate-200/60 bg-white/80 backdrop-blur">
-          <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
-            <div className="flex items-center">
-              <Link href="/dashboard" className="flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center">
-                  <Image
-                    src={logo}
-                    alt="Event Tap Logo"
-                    width={50}
-                    height={50}
-                    className="object-contain"
-                    priority
-                  />
-                </div>
-                <span className="text-lg font-semibold tracking-tight text-slate-900">
+        <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
+          <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-4 sm:px-6">
+            <Link href="/dashboard" className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
+                <Image
+                  src={logo}
+                  alt="Event Tap Logo"
+                  width={38}
+                  height={38}
+                  className="object-contain"
+                  priority
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#c8242b]">
                   Event Tap
                 </span>
-              </Link>
-            </div>
+                <span className="text-sm text-slate-500">
+                  Host operations dashboard
+                </span>
+              </div>
+            </Link>
 
             <div className="flex items-center gap-3">
               <Button
                 asChild
                 size="sm"
-                className="hidden rounded-full bg-gradient-to-r from-red-600 to-rose-500 px-5 text-white shadow-lg shadow-red-200 transition hover:from-red-700 hover:to-rose-600 sm:inline-flex"
+                className="hidden rounded-full bg-[#c8242b] px-5 text-white shadow-lg shadow-[#c8242b]/20 transition hover:bg-[#af1f25] sm:inline-flex"
               >
                 <Link href="/dashboard/events/new">
                   <Plus className="h-4 w-4" />
@@ -53,44 +56,56 @@ export default function DashboardLayout({
           </div>
         </header>
 
-        <div className="flex flex-1 overflow-hidden">
-          <DashboardSidebar />
-          <div className="flex-1  border border-slate-200/70 bg-white/85 p-6 shadow-xl shadow-slate-200/50 backdrop-blur sm:p-8">
-            {children}
+        <div className="mx-auto flex w-full max-w-7xl flex-1 overflow-hidden px-4 py-6 sm:px-6">
+          <div className="flex flex-1 overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
+            <DashboardSidebar />
+            <div className="flex-1 border-l border-slate-200/70 bg-white p-6 sm:p-8">
+              {children}
+            </div>
           </div>
         </div>
 
-        <footer className="border-t border-slate-200/70 bg-white/70">
-          <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-6 px-4 py-8 sm:flex-row sm:px-6">
+        <footer className="border-t border-slate-200/80 bg-white/95">
+          <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm">
                 <Image
                   src={logo}
                   alt="Event Tap Logo"
-                  width={40}
-                  height={40}
+                  width={32}
+                  height={32}
                   className="object-contain"
                 />
               </div>
               <div>
                 <p className="font-semibold text-slate-900">Event Tap</p>
-                <p className="text-sm text-slate-500">Plan smarter. Host happier.</p>
+                <p className="text-sm text-slate-500">
+                  Modern planning tools for polished event teams.
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-6 text-sm text-slate-500">
-              <Link href="/dashboard" className="transition hover:text-red-700">
+            <div className="flex flex-wrap items-center gap-5 text-sm text-slate-500">
+              <Link href="/dashboard" className="transition hover:text-[#c8242b]">
                 Dashboard
               </Link>
-              <Link href="/dashboard/events" className="transition hover:text-red-700">
+              <Link
+                href="/dashboard/events"
+                className="transition hover:text-[#c8242b]"
+              >
                 Events
+              </Link>
+              <Link
+                href="/dashboard/settings"
+                className="transition hover:text-[#c8242b]"
+              >
+                Settings
               </Link>
               <ThemeSwitcher />
             </div>
           </div>
         </footer>
-</div>
-  </main>
-    );
+      </div>
+    </main>
+  );
 }
-
