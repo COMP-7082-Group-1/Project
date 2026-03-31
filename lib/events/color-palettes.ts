@@ -92,6 +92,8 @@ export const COLOR_PALETTE_PRESETS: ColorPalettePreset[] = [
 
 
 
+
+
 export function getColorPaletteById(
   id: string | null | undefined,
 ): ColorPalette {
