@@ -264,6 +264,18 @@ export default async function Home() {
           </div>
 
           <div className="flex items-center gap-6">
+            <Link
+              href="/privacy"
+              className="text-sm text-slate-500 transition hover:text-[#c8242b]"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
+              className="text-sm text-slate-500 transition hover:text-[#c8242b]"
+            >
+              Terms
+            </Link>
             <ThemeSwitcher />
             <p className="text-xs text-slate-500">© {new Date().getFullYear()} Event Tap</p>
           </div>

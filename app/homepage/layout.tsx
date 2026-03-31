@@ -72,6 +72,12 @@ export default function HomepageLayout({
               <Link href="/dashboard" className="transition hover:text-[#c8242b]">
                 Dashboard
               </Link>
+              <Link href="/privacy" className="transition hover:text-[#c8242b]">
+                Privacy
+              </Link>
+              <Link href="/terms" className="transition hover:text-[#c8242b]">
+                Terms
+              </Link>
               <Link
                 href="/dashboard/events"
                 className="transition hover:text-[#c8242b]"

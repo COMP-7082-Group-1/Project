@@ -95,6 +95,12 @@ export default function DashboardLayout({
               >
                 Events
               </Link>
+              <Link href="/privacy" className="transition hover:text-[#c8242b]">
+                Privacy
+              </Link>
+              <Link href="/terms" className="transition hover:text-[#c8242b]">
+                Terms
+              </Link>
               <Link
                 href="/dashboard/settings"
                 className="transition hover:text-[#c8242b]"
