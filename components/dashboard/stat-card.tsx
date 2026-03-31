@@ -36,11 +36,8 @@ export function StatCard({
   action,
 }: StatCardProps) {
   const bgClass = userRsvpStatus ? (rsvpBgClass[userRsvpStatus] ?? "") : "";
-  return (
-    <div
-      className={`relative border rounded-lg p-6 flex flex-row gap-6 hover:bg-accent transition-colors ${bgClass}`}
-    >
-      {action && <div className="absolute top-3 right-3">{action}</div>}
+  const content = (
+    <div className="flex flex-row gap-6">
       {/* Left */}
       <div className="flex flex-col gap-2 flex-1">
         <div className="flex items-center gap-2 text-muted-foreground">
@@ -63,6 +60,17 @@ export function StatCard({
           Declined: {declined}
         </div>
         <div className="text-lg text-muted-foreground">Maybe: {maybe}</div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div
+      className={`border rounded-lg p-6 transition-colors hover:bg-accent ${bgClass}`}
+    >
+      <div className="flex items-start gap-4">
+        <div className="min-w-0 flex-1">{content}</div>
+        {action && <div className="shrink-0">{action}</div>}
       </div>
     </div>
   );
