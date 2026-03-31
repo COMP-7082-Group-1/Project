@@ -15,6 +15,7 @@ async function EventsList() {
             key={event.id}
             icon={<CalendarDays className="h-5 w-5" />}
             title={event.title}
+            userRsvpStatus={event.userRsvpStatus}
             guests={event.guests?.length?.toString()}
             description={event.description.slice(0, 100) + (event.description.length > 100 ? "..." : "")}
             location={`${event.city} ${event.state} ${event.postal_code} ${event.country}`}
