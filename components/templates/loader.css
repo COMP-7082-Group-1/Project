@@ -1,0 +1,127 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap");
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f6f2e9;
+  gap: 28px;
+  font-family: "Cormorant Garamond", serif;
+}
+
+.leaf-ring {
+  position: relative;
+  width: 88px;
+  height: 88px;
+}
+
+.leaf-ring svg {
+  position: absolute;
+  inset: 0;
+  animation: spinRing 3s linear infinite;
+}
+
+.leaf-center {
+  position: absolute;
+  inset: 28px;
+  border-radius: 50%;
+  background: #5b7343;
+  animation: breathe 2s ease-in-out infinite;
+  box-shadow:
+    0 0 0 6px rgba(177, 191, 147, 0.25),
+    0 4px 20px rgba(91, 115, 67, 0.2);
+}
+
+.stem {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, #5b7343, transparent);
+  opacity: 0.5;
+}
+
+.petals {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.petal {
+  width: 6px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: petalSway 1.6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.petal:nth-child(1) {
+  height: 10px;
+  animation-delay: 0s;
+  background: #b1bf93;
+}
+.petal:nth-child(2) {
+  height: 14px;
+  animation-delay: 0.2s;
+  background: #d6d989;
+}
+.petal:nth-child(3) {
+  height: 12px;
+  animation-delay: 0.4s;
+  background: #5b7343;
+}
+.petal:nth-child(4) {
+  height: 14px;
+  animation-delay: 0.6s;
+  background: #d6d989;
+}
+.petal:nth-child(5) {
+  height: 10px;
+  animation-delay: 0.8s;
+  background: #b1bf93;
+}
+
+.loading-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  letter-spacing: 0.15em;
+  color: #5b7343;
+  animation: labelFade 2s ease-in-out infinite;
+}
+
+@keyframes spinRing {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+}
+@keyframes petalSway {
+  0%,
+  100% {
+    transform: rotate(-12deg) scaleY(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: rotate(12deg) scaleY(1.15);
+    opacity: 1;
+  }
+}
+@keyframes labelFade {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
