@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { getEventByID } from "@/lib/data/eventByID";
 import { getGuestsByEventID } from "@/lib/data/guestsByEventID";
 import { updateEvent } from "@/lib/data/updateEvent";
+import { requireUser } from "@/lib/auth";
+import EditGuestList from "@/components/dashboard/events/edit-guest-list";
 
 export default async function EditEventPage({
   params,
@@ -9,13 +11,18 @@ export default async function EditEventPage({
   params: Promise<{ event_id: string }>;
 }) {
   const { event_id } = await params;
-  const [event, guests] = await Promise.all([
+  const [event, guests, user] = await Promise.all([
     getEventByID(event_id),
     getGuestsByEventID(event_id),
+    requireUser(),
   ]);
 
   if (!event) {
     return <p className="text-muted-foreground">Event not found.</p>;
+  }
+
+  if (user.id !== event.owner_user_id) {
+    redirect(`/dashboard/events/${event_id}`);
   }
 
   async function handleSubmit(formData: FormData) {
@@ -187,40 +194,7 @@ export default async function EditEventPage({
         </div>
       </form>
 
-      <div>
-        <p className="text-2xl font-semibold mb-4">Guest List</p>
-        <table className="w-full text-sm border-collapse">
-          <thead>
-            <tr className="border-b text-left text-muted-foreground">
-              <th className="py-2 pr-4 font-medium">Name</th>
-              <th className="py-2 pr-4 font-medium">Email</th>
-              <th className="py-2 pr-4 font-medium">RSVP Status</th>
-              <th className="py-2 pr-4 font-medium">RSVP Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            {guests?.map((guest) => (
-              <tr key={guest.id} className="border-b last:border-0">
-                <td className="py-2 pr-4">{guest.users?.full_name ?? "—"}</td>
-                <td className="py-2 pr-4">{guest.users?.email ?? "—"}</td>
-                <td className="py-2 pr-4">{guest.rsvp_status ?? "—"}</td>
-                <td className="py-2 pr-4">
-                  {guest.rsvp_response_time
-                    ? new Date(guest.rsvp_response_time).toLocaleDateString(
-                        undefined,
-                        {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        },
-                      )
-                    : "—"}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <EditGuestList eventId={event_id} initialGuests={guests ?? []} />
     </div>
   );
 }
