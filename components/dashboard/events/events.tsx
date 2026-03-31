@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { DeleteEventButton } from "@/components/dashboard/delete-event-button";
+import { EditEventButton } from "@/components/dashboard/edit-event-button";
 import { getOwnedEvents } from "@/lib/data/eventOwner";
 
 export async function EventsManager() {
@@ -15,20 +17,36 @@ export async function EventsManager() {
       ) : (
         <div className="grid grid-cols-1 gap-4">
           {events.map((event) => (
-            <Link
+            <div
               key={event.id}
-              href={`/dashboard/events/${event.id}/edit`}
-              className="border rounded-lg p-6 flex flex-col gap-2 hover:bg-accent transition-colors"
+              className="border rounded-lg p-6 transition-colors hover:bg-accent"
             >
-              <h3 className="text-xl font-semibold">
-                {event.title} on{" "}
-                {new Date(event.start_time).toLocaleDateString(undefined, {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </h3>
-            </Link>
+              <div className="flex items-start justify-between gap-4">
+                <Link
+                  href={`/dashboard/events/${event.id}/edit`}
+                  className="min-w-0 flex-1"
+                >
+                  <h3 className="text-xl font-semibold">
+                    {event.title} on{" "}
+                    {new Date(event.start_time).toLocaleDateString(undefined, {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </h3>
+                </Link>
+                <div className="flex items-center gap-1">
+                  <EditEventButton
+                    eventId={event.id}
+                    eventTitle={event.title}
+                  />
+                  <DeleteEventButton
+                    eventId={event.id}
+                    eventTitle={event.title}
+                  />
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       )}
