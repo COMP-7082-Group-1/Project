@@ -2,6 +2,7 @@ import { CalendarDays } from "lucide-react";
 import { EditEventButton } from "@/components/dashboard/edit-event-button";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { DeleteEventButton } from "@/components/dashboard/delete-event-button";
+import { ActionWrapper } from "@/components/dashboard/action-wrapper";
 import { requireUser } from "@/lib/auth";
 import { getEvents } from "@/lib/data/event";
 import { Suspense } from "react";
@@ -49,16 +50,18 @@ async function EventsList() {
             maybe={countByStatus(event.guests, "maybe")}
             action={
               event.owner_user_id === user.id ? (
-                <div className="flex items-center gap-1">
-                  <EditEventButton
-                    eventId={event.id}
-                    eventTitle={event.title}
-                  />
-                  <DeleteEventButton
-                    eventId={event.id}
-                    eventTitle={event.title}
-                  />
-                </div>
+                <ActionWrapper>
+                  <div className="flex items-center gap-1">
+                    <EditEventButton
+                      eventId={event.id}
+                      eventTitle={event.title}
+                    />
+                    <DeleteEventButton
+                      eventId={event.id}
+                      eventTitle={event.title}
+                    />
+                  </div>
+                </ActionWrapper>
               ) : null
             }
           />

@@ -11,6 +11,7 @@ interface StatCardProps {
   location: string;
   color?: string;
   userRsvpStatus?: string;
+  action?: React.ReactNode;
 }
 
 const rsvpBgClass: Record<string, string> = {
@@ -32,12 +33,14 @@ export function StatCard({
   maybe,
   location,
   userRsvpStatus,
+  action,
 }: StatCardProps) {
   const bgClass = userRsvpStatus ? (rsvpBgClass[userRsvpStatus] ?? "") : "";
   return (
     <div
-      className={`border rounded-lg p-6 flex flex-row gap-6 hover:bg-accent transition-colors ${bgClass}`}
+      className={`relative border rounded-lg p-6 flex flex-row gap-6 hover:bg-accent transition-colors ${bgClass}`}
     >
+      {action && <div className="absolute top-3 right-3">{action}</div>}
       {/* Left */}
       <div className="flex flex-col gap-2 flex-1">
         <div className="flex items-center gap-2 text-muted-foreground">
