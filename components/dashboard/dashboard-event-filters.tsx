@@ -4,7 +4,6 @@ import { useDeferredValue, useMemo, useState } from "react";
 import { CalendarDays, ChevronDown, Search } from "lucide-react";
 
 import { DeleteEventButton } from "@/components/dashboard/delete-event-button";
-import { EditEventButton } from "@/components/dashboard/edit-event-button";
 import { StatCard } from "@/components/dashboard/stat-card";
 
 type GuestWithStatus = {
@@ -167,10 +166,6 @@ export function DashboardEventFilters({
                 action={
                   isOwned ? (
                     <div className="flex items-center gap-1">
-                      <EditEventButton
-                        eventId={event.id}
-                        eventTitle={event.title}
-                      />
                       <DeleteEventButton
                         eventId={event.id}
                         eventTitle={event.title}
