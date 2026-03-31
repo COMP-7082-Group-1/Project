@@ -1,3 +1,5 @@
+import type { ColorPalette } from "./color-palettes";
+
 export type EventTemplateData = {
   name: string;
   description: string;
@@ -10,6 +12,8 @@ export type EventTemplateData = {
   main_image_url: string;
   video_url: string;
   google_maps_link: string;
+  color_palette_id?: string | null;
+  color_palette?: ColorPalette;
 };
 
 export type TemplateRecord = {

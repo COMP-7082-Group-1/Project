@@ -1,6 +1,7 @@
 "use client";
 
 import { useDeferredValue, useMemo, useState } from "react";
+import Link from "next/link";
 import { CalendarDays, ChevronDown, Search } from "lucide-react";
 
 import { DeleteEventButton } from "@/components/dashboard/delete-event-button";
@@ -141,39 +142,39 @@ export function DashboardEventFilters({
             const isOwned = event.owner_user_id === currentUserId;
 
             return (
-              <StatCard
-                key={event.id}
-                icon={<CalendarDays className="h-5 w-5" />}
-                title={event.title}
-                guests={event.guests?.length?.toString() ?? "0"}
-                description={
-                  event.description
-                    ? event.description.slice(0, 100) +
-                      (event.description.length > 100 ? "..." : "")
-                    : "No description"
-                }
-                location={formatLocation(event)}
-                date={new Date(event.start_time).toLocaleDateString(undefined, {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-                invited={countByStatus(event.guests, "pending")}
-                accepted={countByStatus(event.guests, "accepted")}
-                declined={countByStatus(event.guests, "declined")}
-                maybe={countByStatus(event.guests, "maybe")}
-                href={`/dashboard/events/${event.id}/`}
-                action={
-                  isOwned ? (
-                    <div className="flex items-center gap-1">
-                      <DeleteEventButton
-                        eventId={event.id}
-                        eventTitle={event.title}
-                      />
-                    </div>
-                  ) : null
-                }
-              />
+              <Link key={event.id} href={`/dashboard/events/${event.id}/`}>
+                <StatCard
+                  icon={<CalendarDays className="h-5 w-5" />}
+                  title={event.title}
+                  guests={event.guests?.length?.toString() ?? "0"}
+                  description={
+                    event.description
+                      ? event.description.slice(0, 100) +
+                        (event.description.length > 100 ? "..." : "")
+                      : "No description"
+                  }
+                  location={formatLocation(event)}
+                  date={new Date(event.start_time).toLocaleDateString(undefined, {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                  invited={countByStatus(event.guests, "pending")}
+                  accepted={countByStatus(event.guests, "accepted")}
+                  declined={countByStatus(event.guests, "declined")}
+                  maybe={countByStatus(event.guests, "maybe")}
+                  action={
+                    isOwned ? (
+                      <div className="flex items-center gap-1">
+                        <DeleteEventButton
+                          eventId={event.id}
+                          eventTitle={event.title}
+                        />
+                      </div>
+                    ) : null
+                  }
+                />
+              </Link>
             );
           })}
         </div>
