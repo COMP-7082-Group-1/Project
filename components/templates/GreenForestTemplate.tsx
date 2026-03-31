@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
-import './template-1.css';
-
+import { useEffect, useState } from "react";
+import "./template-1.css";
+import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 import type { EventTemplateData } from "@/lib/events/template-preview";
+import { usePathname, useRouter } from "next/navigation";
 
 type Props = {
-  data: EventTemplateData;
+  data: EventTemplateData & { id: string };
 };
 
 export default function GreenForestTemplate({ data }: Props) {
@@ -21,6 +23,20 @@ export default function GreenForestTemplate({ data }: Props) {
   const coupleImage = data.main_image_url;
   const videoUrl = data.video_url;
 
+  const router = useRouter();
+  const pathname = usePathname();
+  const supabase = createClient();
+  const [user, setUser] = useState<User | null>(null);
+  const [email, setEmail] = useState("");
+  const [magicSent, setMagicSent] = useState(false);
+  const [attendance, setAttendance] = useState<"accepted" | "declined" | "">(
+    "",
+  );
+  const [submitted, setSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Scroll reveal observer
   useEffect(() => {
     const revealElements = document.querySelectorAll<HTMLElement>(".reveal");
 
@@ -30,29 +46,77 @@ export default function GreenForestTemplate({ data }: Props) {
           if (entry.isIntersecting) {
             const el = entry.target as HTMLElement;
             const animation = el.dataset.animation;
-
             el.classList.add("in-view");
-
             if (animation) {
               animation.split(" ").forEach((cls) => el.classList.add(cls));
             }
-
             obs.unobserve(el);
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
 
     revealElements.forEach((el) => observer.observe(el));
-
     return () => observer.disconnect();
   }, []);
 
+  // Auth state
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: sessionData }) => {
+      setUser(sessionData.session?.user ?? null);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const sendMagicLink = async () => {
+    if (!email) return;
+    setLoading(true);
+    await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.href },
+    });
+    setMagicSent(true);
+    setLoading(false);
+  };
+
+  const submitRsvp = async () => {
+    if (!attendance) return;
+    setLoading(true);
+    setErrorMsg("");
+
+    const res = await fetch("/api/rsvp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ eventId: data.id, attendance }),
+    });
+    const result = await res.json();
+    
+    if (res.status === 401 && result.redirectTo) {
+      router.push(
+        `${result.redirectTo}?redirect=${encodeURIComponent(pathname)}`,
+      );
+      return; // stop execution
+    }
+
+    if (!res.ok) {
+      setErrorMsg(result.error || "Something went wrong.");
+    } else {
+      setSubmitted(true);
+    }
+
+    setLoading(false);
+  };
+
   return (
     <>
-
-
       <link rel="preconnect" href="https://fonts.gstatic.com" />
       <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap"
@@ -66,7 +130,10 @@ export default function GreenForestTemplate({ data }: Props) {
       />
 
       <div className="template-one home">
-        <div className="rsvp reveal" data-animation="slide-in-blurred-br dur-350">
+        <div
+          className="rsvp reveal"
+          data-animation="slide-in-blurred-br dur-350"
+        >
           <a href="#rsvp-form">
             <img
               src="https://pejdmljopqhvyadmvttr.supabase.co/storage/v1/object/public/wedding-images-template/RSVP-2.png"
@@ -118,12 +185,15 @@ export default function GreenForestTemplate({ data }: Props) {
         <section id="welcome" className="standard">
           <div>
             <p className="bigtext reveal" data-animation="focus-in dur-2">
-              We are so happy to celebrate our wedding with the people we love most.
-              Join us for a joyful day in{" "}
+              We are so happy to celebrate our wedding with the people we love
+              most. Join us for a joyful day in{" "}
               <span className="daje">{address}</span> <span>{address2}</span>
             </p>
 
-            <div className="divider bottom reveal" data-animation="focus-in dur-2" />
+            <div
+              className="divider bottom reveal"
+              data-animation="focus-in dur-2"
+            />
 
             <p className="details reveal" data-animation="focus-in dur-2">
               <a href={googleMapsLink} target="_blank" rel="noreferrer">
@@ -143,13 +213,17 @@ export default function GreenForestTemplate({ data }: Props) {
             />
 
             <p className="hugetext reveal" data-animation="focus-in dur-2">
-              We hope you’ll join us on this special day.
+              We hope you'll join us on this special day.
             </p>
 
-            <div className="divider bottom reveal" data-animation="focus-in dur-2" />
+            <div
+              className="divider bottom reveal"
+              data-animation="focus-in dur-2"
+            />
 
             <p className="subtext reveal" data-animation="focus-in dur-2">
-              A day of love, nature, celebration, music, and unforgettable memories.
+              A day of love, nature, celebration, music, and unforgettable
+              memories.
             </p>
           </div>
         </section>
@@ -212,10 +286,14 @@ export default function GreenForestTemplate({ data }: Props) {
               )}
             </p>
 
-            <div className="divider bottom reveal" data-animation="focus-in dur-2" />
+            <div
+              className="divider bottom reveal"
+              data-animation="focus-in dur-2"
+            />
 
             <p className="subtext reveal" data-animation="focus-in dur-2">
-              Your presence will make our celebration even more meaningful and special.
+              Your presence will make our celebration even more meaningful and
+              special.
             </p>
           </div>
         </section>
@@ -229,7 +307,10 @@ export default function GreenForestTemplate({ data }: Props) {
               alt="Bride and groom"
             />
 
-            <div className="divider bottom reveal" data-animation="focus-in dur-2" />
+            <div
+              className="divider bottom reveal"
+              data-animation="focus-in dur-2"
+            />
 
             <p className="subtext reveal" data-animation="focus-in dur-2">
               A little glimpse of the bride and groom.
@@ -237,6 +318,7 @@ export default function GreenForestTemplate({ data }: Props) {
           </div>
         </section>
 
+        {/* RSVP Section */}
         <section className="standard rsvp-form-section" id="rsvp-form">
           <div>
             <img
@@ -250,45 +332,112 @@ export default function GreenForestTemplate({ data }: Props) {
               RSVP
             </p>
 
-            <div className="divider bottom reveal" data-animation="focus-in dur-2" />
+            <div
+              className="divider bottom reveal"
+              data-animation="focus-in dur-2"
+            />
 
             <p className="subtext reveal" data-animation="focus-in dur-2">
-              Please let us know if you’ll be joining us.
+              Please let us know if you'll be joining us.
             </p>
 
-            <form className="rsvp-form reveal" data-animation="focus-in dur-2">
-              <div className="form-row">
-                <label htmlFor="fullName">Full Name</label>
-                <input type="text" id="fullName" name="fullName" required />
-              </div>
+            <div className="rsvp-form reveal" data-animation="focus-in dur-2">
+              {submitted ? (
+                /* ── Thank you state ── */
+                <p className="subtext">
+                  {attendance === "accepted"
+                    ? "You're coming! We can't wait to see you."
+                    : "We'll miss you, but thank you for letting us know."}
+                </p>
+              ) : !user ? (
+                /* ── Not logged in ── */
+                magicSent ? (
+                  <p className="subtext">
+                    Check your email — we sent you a login link. Click it to
+                    come back and RSVP.
+                  </p>
+                ) : (
+                  <>
+                    <p className="subtext">
+                      Enter your email to verify your identity and RSVP.
+                    </p>
+                    <div className="form-row">
+                      <label htmlFor="magic-email">Email</label>
+                      <input
+                        type="email"
+                        id="magic-email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="your@email.com"
+                      />
+                    </div>
+                    <div className="form-submit">
+                      <button
+                        type="button"
+                        className="rsvp-submit"
+                        onClick={sendMagicLink}
+                        disabled={loading || !email}
+                      >
+                        {loading ? "Sending..." : "Send login link"}
+                      </button>
+                    </div>
+                  </>
+                )
+              ) : (
+                /* ── Logged in ── */
+                <>
+                  <p className="subtext">Logged in as {user.email}</p>
+                  <div className="form-row">
+                    <label>Will you attend?</label>
+                    <div className="radio-group">
+                      <label>
+                        <input
+                          type="radio"
+                          name="attendance"
+                          value="accepted"
+                          checked={attendance === "accepted"}
+                          onChange={() => setAttendance("accepted")}
+                        />
+                        Joyfully Accept
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name="attendance"
+                          value="declined"
+                          checked={attendance === "declined"}
+                          onChange={() => setAttendance("declined")}
+                        />
+                        Regretfully Decline
+                      </label>
+                    </div>
+                  </div>
 
-              <div className="form-row">
-                <label htmlFor="email">Email</label>
-                <input type="email" id="email" name="email" required />
-              </div>
+                  {errorMsg && (
+                    <p
+                      style={{
+                        color: "red",
+                        fontSize: "0.9rem",
+                        marginTop: "0.5rem",
+                      }}
+                    >
+                      {errorMsg}
+                    </p>
+                  )}
 
-              <div className="form-row">
-                <label>Will you attend?</label>
-
-                <div className="radio-group">
-                  <label>
-                    <input type="radio" name="attendance" value="accepted" required />
-                    Joyfully Accept
-                  </label>
-
-                  <label>
-                    <input type="radio" name="attendance" value="declined" required />
-                    Regretfully Decline
-                  </label>
-                </div>
-              </div>
-
-              <div className="form-submit">
-                <button type="submit" className="rsvp-submit">
-                  Send RSVP
-                </button>
-              </div>
-            </form>
+                  <div className="form-submit">
+                    <button
+                      type="button"
+                      className="rsvp-submit"
+                      onClick={submitRsvp}
+                      disabled={!attendance || loading}
+                    >
+                      {loading ? "Sending..." : "Send RSVP"}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </section>
 
@@ -308,14 +457,17 @@ export default function GreenForestTemplate({ data }: Props) {
 
           <div>
             <p className="bigtext reveal" data-animation="focus-in dur-2">
-              We can’t wait to celebrate this beautiful day with you.
+              We can't wait to celebrate this beautiful day with you.
             </p>
 
-            <div className="divider bottom reveal" data-animation="focus-in dur-2" />
+            <div
+              className="divider bottom reveal"
+              data-animation="focus-in dur-2"
+            />
 
             <p className="subtext reveal" data-animation="focus-in dur-2">
-              Thank you for being part of our story and for making this day even more
-              special with your presence.
+              Thank you for being part of our story and for making this day even
+              more special with your presence.
             </p>
           </div>
         </section>

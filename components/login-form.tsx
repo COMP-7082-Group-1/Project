@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export function LoginForm({
@@ -25,7 +25,9 @@ export function LoginForm({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo");
+  console.log("Redirecting to:", redirectTo);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const supabase = createClient();
@@ -39,7 +41,7 @@ export function LoginForm({
       });
       if (error) throw error;
       // Update this route to redirect to an authenticated route. The user already has an active session.
-      router.push("/dashboard");
+      router.push(redirectTo || "/dashboard");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -51,7 +53,9 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="rounded-3xl border-slate-200/70 bg-white/90 shadow-2xl shadow-slate-200/60 backdrop-blur">
         <CardHeader className="space-y-2 pb-2">
-          <CardTitle className="text-3xl tracking-tight text-slate-900">Sign in</CardTitle>
+          <CardTitle className="text-3xl tracking-tight text-slate-900">
+            Sign in
+          </CardTitle>
           <CardDescription>
             Enter your email below to access your event dashboard.
           </CardDescription>
@@ -106,7 +110,7 @@ export function LoginForm({
             <div className="mt-6 text-center text-sm text-slate-600">
               Don&apos;t have an account?{" "}
               <Link
-                href="/auth/sign-up"
+                href={`/auth/sign-up${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`}
                 className="font-medium text-red-600 underline-offset-4 transition hover:text-red-700 hover:underline"
               >
                 Sign up

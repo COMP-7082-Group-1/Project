@@ -71,12 +71,13 @@ export default function NewEventPage() {
     return getTemplateComponent(selectedTemplate?.key);
   }, [selectedTemplate]);
 
-  const previewData = useMemo<EventTemplateData>(
+  const previewData = useMemo<EventTemplateData & { id: string }>(
     () => ({
       ...form,
       main_image_url: mainImagePreview || form.main_image_url,
+      id: selectedTemplateId || "",
     }),
-    [form, mainImagePreview],
+    [form, mainImagePreview, selectedTemplateId],
   );
 
 
@@ -448,7 +449,7 @@ router.replace("/dashboard/events");
       {currentStep === 3 && (
         <EventPreview
           templateComponent={SelectedTemplateComponent}
-          data={previewData}
+          data={previewData as EventTemplateData}
         />
       )}
 

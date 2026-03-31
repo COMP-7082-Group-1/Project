@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import slugify from "slugify";
 import { getUser } from "@/lib/auth";
+import { Resend } from "resend";
 
 type GuestInput = {
   full_name: string;
@@ -13,20 +14,14 @@ export async function POST(req: Request) {
     const user = await getUser();
 
     if (!user?.id) {
-      return NextResponse.json(
-        { error: "Unauthorized." },
-        { status: 401 },
-      );
+      return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
     }
 
     const body = await req.json();
     const { form, guests, selectedTemplateId } = body;
 
     if (!form?.name) {
-      return NextResponse.json(
-        { error: "Missing form.name" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Missing form.name" }, { status: 400 });
     }
 
     if (!selectedTemplateId) {
@@ -61,8 +56,8 @@ export async function POST(req: Request) {
           google_maps_link: form.google_maps_link || null,
           slug,
           published_url: publishedUrl,
-          is_published: false,
-          status: "draft",
+          is_published: true,
+          status: "active",
         },
       ])
       .select()
@@ -112,10 +107,12 @@ export async function POST(req: Request) {
       }
 
       const userMap = new Map(
-        (matchedUsers || []).map((matchedUser: { id: string; email: string }) => [
-          matchedUser.email.toLowerCase(),
-          matchedUser.id,
-        ]),
+        (matchedUsers || []).map(
+          (matchedUser: { id: string; email: string }) => [
+            matchedUser.email.toLowerCase(),
+            matchedUser.id,
+          ],
+        ),
       );
 
       const guestRows = uniqueGuests.map((guest) => ({
@@ -141,6 +138,49 @@ export async function POST(req: Request) {
           { status: 500 },
         );
       }
+
+      // ── Send invitation emails ──────────────────────────────
+
+      const resend = new Resend(process.env.RESEND_API_KEY);
+
+      const results = await Promise.allSettled(
+        uniqueGuests.map((guest) =>
+          resend.emails.send({
+            from: "invites@yourdomain.com", // must be a verified domain in Resend
+            to: guest.email,
+            subject: `You're invited to ${form.name}`,
+            html: `
+  <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2>You're invited!</h2>
+    <p>Hi ${guest.full_name},</p>
+    <p>You have been invited to <strong>${form.name}</strong>.</p>
+    <p>
+      
+        href="${publishedUrl}"
+        style="
+          display: inline-block;
+          background: #2d6a4f;
+          color: white;
+          padding: 12px 24px;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: bold;
+        "
+      >
+        View Invitation & RSVP
+      </a>
+    </p>
+    <p style="color: #888; font-size: 0.85rem;">
+      If the button doesn't work, copy this link: ${publishedUrl}
+    </p>
+  </div>
+`,
+          }),
+        ),
+      );
+      // ───────────────────────────────────────────────────────
+      console.log("Email results:", JSON.stringify(results, null, 2));
+
     }
 
     return NextResponse.json({

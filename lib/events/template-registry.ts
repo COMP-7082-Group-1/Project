@@ -3,7 +3,7 @@ import GreenForestTemplate from "@/components/templates/GreenForestTemplate";
 import type { EventTemplateData } from "./template-preview";
 
 export type EventTemplateComponent = ComponentType<{
-  data: EventTemplateData;
+  data: EventTemplateData & { id: string };
 }>;
 
 export const templateRegistry: Record<string, EventTemplateComponent> = {
