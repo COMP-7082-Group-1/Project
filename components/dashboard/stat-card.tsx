@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 interface StatCardProps {
   icon: React.ReactNode;
   title: string;
@@ -11,9 +9,16 @@ interface StatCardProps {
   declined: number;
   maybe: number;
   location: string;
-  href?: string;
-  action?: React.ReactNode;
+  color?: string;
+  userRsvpStatus?: string;
 }
+
+const rsvpBgClass: Record<string, string> = {
+  accepted: "bg-green-500/10",
+  declined: "bg-red-500/10",
+  maybe: "bg-yellow-500/10",
+  pending: "bg-pink-500/10",
+};
 
 export function StatCard({
   icon,
@@ -26,11 +31,13 @@ export function StatCard({
   declined,
   maybe,
   location,
-  href,
-  action,
+  userRsvpStatus,
 }: StatCardProps) {
-  const content = (
-    <div className="flex flex-row gap-6">
+  const bgClass = userRsvpStatus ? (rsvpBgClass[userRsvpStatus] ?? "") : "";
+  return (
+    <div
+      className={`border rounded-lg p-6 flex flex-row gap-6 hover:bg-accent transition-colors ${bgClass}`}
+    >
       {/* Left */}
       <div className="flex flex-col gap-2 flex-1">
         <div className="flex items-center gap-2 text-muted-foreground">
@@ -53,23 +60,6 @@ export function StatCard({
           Declined: {declined}
         </div>
         <div className="text-lg text-muted-foreground">Maybe: {maybe}</div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="border rounded-lg p-6 transition-colors hover:bg-accent">
-      <div className="flex items-start gap-4">
-        <div className="min-w-0 flex-1">
-          {href ? (
-            <Link href={href} className="block">
-              {content}
-            </Link>
-          ) : (
-            content
-          )}
-        </div>
-        <div className="shrink-0">{action}</div>
       </div>
     </div>
   );
