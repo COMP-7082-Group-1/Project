@@ -18,7 +18,7 @@ export async function getEvents() {
 
   const { data: guestEntries, error: guestError } = await supabase
     .from("guests")
-    .select("*, events(*)")
+    .select("*, events(*, guests(*))")
     .eq("user_id", user.id);
 
   if (guestError) {
@@ -28,8 +28,8 @@ export async function getEvents() {
 
   const ownedIds = new Set((ownedEvents ?? []).map((e) => e.id));
   const guestEvents = (guestEntries ?? [])
-    .map((g) => g.events as Record<string, any>)
-    .filter((e) => e && !ownedIds.has(e.id));
+    .filter((g) => g.events && !ownedIds.has((g.events as Record<string, any>).id))
+    .map((g) => ({ ...(g.events as Record<string, any>), userRsvpStatus: g.rsvp_status }));
 
   return [...(ownedEvents ?? []), ...guestEvents].sort(
     (a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
