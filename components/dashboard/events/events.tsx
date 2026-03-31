@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { DeleteEventButton } from "@/components/dashboard/delete-event-button";
-import { EditEventButton } from "@/components/dashboard/edit-event-button";
 import { getOwnedEvents } from "@/lib/data/eventOwner";
 
 export async function EventsManager() {
@@ -36,10 +35,6 @@ export async function EventsManager() {
                   </h3>
                 </Link>
                 <div className="flex items-center gap-1">
-                  <EditEventButton
-                    eventId={event.id}
-                    eventTitle={event.title}
-                  />
                   <DeleteEventButton
                     eventId={event.id}
                     eventTitle={event.title}

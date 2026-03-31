@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import './template-1.css';
 
 import type { EventTemplateData } from "@/lib/events/template-preview";
+import { getColorPaletteById } from "@/lib/events/color-palettes";
 
 type Props = {
   data: EventTemplateData;
@@ -20,6 +21,20 @@ export default function GreenForestTemplate({ data }: Props) {
   const description = data.description;
   const coupleImage = data.main_image_url;
   const videoUrl = data.video_url;
+  const colorPalette = data.color_palette || getColorPaletteById(data.color_palette_id);
+
+  useEffect(() => {
+    // Apply color palette to CSS variables
+    const root = document.documentElement;
+    root.style.setProperty('--green', colorPalette.primary);
+    root.style.setProperty('--light-green', colorPalette.primary_light);
+    root.style.setProperty('--yellow', colorPalette.accent);
+    root.style.setProperty('--yellow-down', colorPalette.accent_light);
+    root.style.setProperty('--beige', colorPalette.background);
+    root.style.setProperty('--red', colorPalette.accent_secondary);
+    root.style.setProperty('--text', colorPalette.text);
+    root.style.setProperty('--shadow-color', colorPalette.shadow_hue);
+  }, [colorPalette]);
 
   useEffect(() => {
     const revealElements = document.querySelectorAll<HTMLElement>(".reveal");
