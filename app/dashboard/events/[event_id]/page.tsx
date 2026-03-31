@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { getEventByID } from "@/lib/data/eventByID";
 import { getGuestsByEventID } from "@/lib/data/guestsByEventID";
@@ -27,7 +28,15 @@ export default async function EventPage({
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-2xl font-semibold">{event.name ?? event.title}</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-semibold">{event.name ?? event.title}</h2>
+        <Link
+          href={`/dashboard/events/${event_id}/edit`}
+          className="text-sm px-3 py-1.5 rounded-md border hover:bg-muted transition-colors"
+        >
+          Edit Event
+        </Link>
+      </div>
       <p className="text-muted-foreground">
         {new Date(event.start_time).toLocaleDateString(undefined, {
           month: "short",
