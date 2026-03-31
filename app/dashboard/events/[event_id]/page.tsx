@@ -1,23 +1,44 @@
+import Link from "next/link";
+import { requireUser } from "@/lib/auth";
 import { getEventByID } from "@/lib/data/eventByID";
 import { getGuestsByEventID } from "@/lib/data/guestsByEventID";
+import RsvpButton from "@/components/dashboard/events/rsvp-button";
 
-// todo: display event details
 export default async function EventPage({
   params,
 }: {
   params: Promise<{ event_id: string }>;
 }) {
   const { event_id } = await params;
-  const event = await getEventByID(event_id);
-  const guests = await getGuestsByEventID(event_id);
+  const [event, guests, user] = await Promise.all([
+    getEventByID(event_id),
+    getGuestsByEventID(event_id),
+    requireUser(),
+  ]);
 
   if (!event) {
     return <p className="text-muted-foreground">Event not found.</p>;
   }
 
+  const sortedGuests = [...(guests ?? [])].sort((a, b) => {
+    if (a.user_id === user.id) return -1;
+    if (b.user_id === user.id) return 1;
+    return 0;
+  });
+
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-2xl font-semibold">{event.title}</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-semibold">{event.name ?? event.title}</h2>
+        {user.id === event.owner_user_id && (
+          <Link
+            href={`/dashboard/events/${event_id}/edit`}
+            className="text-sm px-3 py-1.5 rounded-md border hover:bg-muted transition-colors"
+          >
+            Edit Event
+          </Link>
+        )}
+      </div>
       <p className="text-muted-foreground">
         {new Date(event.start_time).toLocaleDateString(undefined, {
           month: "short",
@@ -26,10 +47,35 @@ export default async function EventPage({
         })}
       </p>
       <p className="text-muted-foreground">{event.description}</p>
-      <p className="text-muted-foreground">
-        {`${event.city} ${event.state} ${event.postal_code} ${event.country}`}{" "}
-      </p>
-      <br></br>
+      <div className="flex flex-col gap-1 text-muted-foreground">
+        {event.address && <p>{event.address}</p>}
+        <p>
+          {[event.city, event.state, event.postal_code, event.country]
+            .filter(Boolean)
+            .join(" ")}
+        </p>
+        {event.google_maps_link && (
+          <a
+            href={event.google_maps_link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary underline text-sm"
+          >
+            View on Google Maps
+          </a>
+        )}
+      </div>
+      {event.video_url && (
+        <div>
+          <p className="text-sm font-medium mb-1">Event Video</p>
+          <video
+            src={event.video_url}
+            controls
+            className="w-full rounded-lg max-h-64"
+          />
+        </div>
+      )}
+      <br />
       <p className="text-2xl font-semibold">Guest List</p>
 
       <table className="w-full text-sm border-collapse">
@@ -42,11 +88,28 @@ export default async function EventPage({
           </tr>
         </thead>
         <tbody>
-          {guests?.map((guest) => (
+          {sortedGuests.map((guest) => (
             <tr key={guest.id} className="border-b last:border-0">
-              <td className="py-2 pr-4">{guest.users?.full_name ?? "—"}</td>
+              <td className="py-2 pr-4">
+                {guest.users?.full_name ?? "—"}
+                {guest.user_id === user.id && (
+                  <span className="ml-2 text-xs text-muted-foreground">
+                    (you)
+                  </span>
+                )}
+              </td>
               <td className="py-2 pr-4">{guest.users?.email ?? "—"}</td>
-              <td className="py-2 pr-4">{guest.rsvp_status ?? "—"}</td>
+              <td className="py-2 pr-4">
+                {guest.user_id === user.id ? (
+                  <RsvpButton
+                    guestId={guest.id}
+                    eventId={event_id}
+                    currentStatus={guest.rsvp_status}
+                  />
+                ) : (
+                  (guest.rsvp_status ?? "—")
+                )}
+              </td>
               <td className="py-2 pr-4">
                 {guest.rsvp_response_time
                   ? new Date(guest.rsvp_response_time).toLocaleDateString(

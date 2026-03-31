@@ -5,8 +5,6 @@ import { useMemo } from "react";
 import {
   LayoutDashboard,
   PartyPopper,
-  Users,
-  Mail,
   Settings,
   HelpCircle,
   PlusCircle,
@@ -43,11 +41,11 @@ export const DashboardSidebar = () => {
       //   href: "/dashboard/invitations",
       //   icon: <Mail className="h-4 w-4" />,
       // },
-      // {
-      //   label: "Settings",
-      //   href: "/dashboard/settings",
-      //   icon: <Settings className="h-4 w-4" />,
-      // },
+      {
+        label: "Settings",
+        href: "/dashboard/settings",
+        icon: <Settings className="h-4 w-4" />,
+      },
     ],
     []
   );
