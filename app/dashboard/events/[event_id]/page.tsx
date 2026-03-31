@@ -27,7 +27,7 @@ export default async function EventPage({
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-2xl font-semibold">{event.title}</h2>
+      <h2 className="text-2xl font-semibold">{event.name ?? event.title}</h2>
       <p className="text-muted-foreground">
         {new Date(event.start_time).toLocaleDateString(undefined, {
           month: "short",
@@ -36,9 +36,34 @@ export default async function EventPage({
         })}
       </p>
       <p className="text-muted-foreground">{event.description}</p>
-      <p className="text-muted-foreground">
-        {`${event.city} ${event.state} ${event.postal_code} ${event.country}`}
-      </p>
+      <div className="flex flex-col gap-1 text-muted-foreground">
+        {event.address && <p>{event.address}</p>}
+        <p>
+          {[event.city, event.state, event.postal_code, event.country]
+            .filter(Boolean)
+            .join(" ")}
+        </p>
+        {event.google_maps_link && (
+          <a
+            href={event.google_maps_link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary underline text-sm"
+          >
+            View on Google Maps
+          </a>
+        )}
+      </div>
+      {event.video_url && (
+        <div>
+          <p className="text-sm font-medium mb-1">Event Video</p>
+          <video
+            src={event.video_url}
+            controls
+            className="w-full rounded-lg max-h-64"
+          />
+        </div>
+      )}
       <br />
       <p className="text-2xl font-semibold">Guest List</p>
 
