@@ -1,120 +1,57 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import { CalendarDays, Users, MapPin, Plus } from "lucide-react";
+import { CalendarDays } from "lucide-react";
+import { StatCard } from "@/components/dashboard/stat-card";
+import { getEvents } from "@/lib/data/event";
+import { Suspense } from "react";
+import Link from "next/link";
 
-async function getUserEmail() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
+async function EventsList() {
+  const events = (await getEvents()) || [];
 
-  if (error || !data?.user) {
-    redirect("/auth/login");
-  }
-
-  return data.user.email;
+  return (
+    <>
+      {events.map((event) => (
+        <Link key={event.id} href={`/dashboard/events/${event.id}/`}>
+          <StatCard
+            key={event.id}
+            icon={<CalendarDays className="h-5 w-5" />}
+            title={event.title}
+            guests={event.guests?.length?.toString()}
+            description={event.description.slice(0, 100) + (event.description.length > 100 ? "..." : "")}
+            location={`${event.city} ${event.state} ${event.postal_code} ${event.country}`}
+            date={new Date(event.start_time).toLocaleDateString(undefined, {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+            invited={
+              event.guests?.filter((g: any) => g.rsvp_status === "pending").length
+            }
+            accepted={
+              event.guests?.filter((g: any) => g.rsvp_status === "accepted").length
+            }
+            declined={
+              event.guests?.filter((g: any) => g.rsvp_status === "declined").length
+            }
+            maybe={event.guests?.filter((g: any) => g.rsvp_status === "maybe").length}
+          />
+        </Link>
+      ))}
+    </>
+  );
 }
 
 export default function EventPlannerDashboard() {
   return (
     <div className="flex-1 w-full flex flex-col gap-8">
-      {/* Welcome Header */}
       <div className="flex flex-col gap-2">
-        <h1 className="text-4xl font-bold">Event Planner</h1>
+        <h1 className="text-4xl font-bold">All My Events</h1>
       </div>
 
-      {/* Hard-coded Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatCard
-          icon={<CalendarDays className="h-5 w-5" />}
-          title="Upcoming Events"
-          value="0"
-          description="Events this month"
-        />
-        <StatCard
-          icon={<Users className="h-5 w-5" />}
-          title="Total Attendees"
-          value="0"
-          description="Across all events"
-        />
-        <StatCard
-          icon={<MapPin className="h-5 w-5" />}
-          title="Venues"
-          value="0"
-          description="Active venues"
-        />
-      </div>
-
-      {/* Quick Actions */}
-      <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <ActionCard
-            icon={<Plus className="h-5 w-5" />}
-            title="Create New Event"
-            description="Plan a new event from scratch"
-          />
-          <ActionCard
-            icon={<CalendarDays className="h-5 w-5" />}
-            title="View Calendar"
-            description="See all upcoming events"
-          />
-        </div>
-      </div>
-
-      {/* Recent Events */}
-      <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold">Recent Events</h2>
-        <div className="border rounded-lg p-8 text-center text-muted-foreground">
-          <p>No events yet. Create your first event to get started!</p>
-        </div>
-      </div>
+      <Suspense
+        fallback={<p className="text-muted-foreground">Loading events...</p>}
+      >
+        <EventsList />
+      </Suspense>
     </div>
-  );
-}
-
-async function UserEmail() {
-  const email = await getUserEmail();
-  return <span className="font-medium">{email}</span>;
-}
-
-function StatCard({
-  icon,
-  title,
-  value,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  value: string;
-  description: string;
-}) {
-  return (
-    <div className="border rounded-lg p-6 flex flex-col gap-2">
-      <div className="flex items-center gap-2 text-muted-foreground">
-        {icon}
-        <span className="text-sm font-medium">{title}</span>
-      </div>
-      <div className="text-3xl font-bold">{value}</div>
-      <div className="text-sm text-muted-foreground">{description}</div>
-    </div>
-  );
-}
-
-function ActionCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <button className="border rounded-lg p-6 flex items-start gap-4 hover:bg-accent transition-colors text-left">
-      <div className="p-2 bg-primary/10 rounded-md text-primary">{icon}</div>
-      <div className="flex flex-col gap-1">
-        <h3 className="font-semibold">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
-    </button>
   );
 }
