@@ -1,3 +1,5 @@
+import { ActionWrapper } from "@/components/dashboard/action-wrapper";
+
 interface StatCardProps {
   icon: React.ReactNode;
   title: string;
@@ -76,7 +78,7 @@ export function StatCard({
     >
       <div className="flex items-start gap-4">
         <div className="min-w-0 flex-1">{content}</div>
-        {action && <div className="shrink-0">{action}</div>}
+        <ActionWrapper>{action}</ActionWrapper>
       </div>
     </div>
   );
