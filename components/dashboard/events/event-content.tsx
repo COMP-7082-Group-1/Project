@@ -4,6 +4,7 @@ import { getEventByID } from "@/lib/data/eventByID";
 import { getGuestsByEventID } from "@/lib/data/guestsByEventID";
 import RsvpButton from "@/components/dashboard/events/rsvp-button";
 import ExportGuestsCSV from "@/components/dashboard/events/export-guests-csv";
+import CopyLinkButton from "./copy-link-button";
 
 export default async function EventPageContent({
   params,
@@ -28,20 +29,53 @@ export default async function EventPageContent({
     return 0;
   });
 
+  const isOwner = user.id === event.owner_user_id;
+
   return (
     <div className="flex flex-col gap-4">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-semibold">{event.name ?? event.title}</h2>
-        {user.id === event.owner_user_id && (
-          <Link
-            href={`/dashboard/events/${event_id}/edit`}
-            className="text-sm px-3 py-1.5 rounded-md border hover:bg-muted transition-colors"
-          >
-            Edit Event
-          </Link>
-        )}
+
+        <div className="flex items-center gap-2">
+          {isOwner ? (
+            <>
+              <Link
+                href={`/dashboard/events/${event_id}/edit`}
+                className="text-sm px-3 py-1.5 rounded-md border hover:bg-muted transition-colors"
+              >
+                Edit Event
+              </Link>
+              {event.published_url && (
+                <>
+                  <CopyLinkButton url={event.published_url} />
+                  <a
+                    href={event.published_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm px-3 py-1.5 rounded-md border hover:bg-muted transition-colors"
+                  >
+                    Visit Event
+                  </a>
+                </>
+              )}
+            </>
+          ) : (
+            event.published_url && (
+              <a
+                href={event.published_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                RSVP Now
+              </a>
+            )
+          )}
+        </div>
       </div>
 
+      {/* Date */}
       <p className="text-muted-foreground">
         {new Date(event.start_time).toLocaleDateString(undefined, {
           month: "short",
@@ -50,8 +84,10 @@ export default async function EventPageContent({
         })}
       </p>
 
+      {/* Description */}
       <p className="text-muted-foreground">{event.description}</p>
 
+      {/* Location */}
       <div className="flex flex-col gap-1 text-muted-foreground">
         {event.address && <p>{event.address}</p>}
         <p>
@@ -71,6 +107,7 @@ export default async function EventPageContent({
         )}
       </div>
 
+      {/* Video */}
       {event.video_url && (
         <div>
           <p className="text-sm font-medium mb-1">Event Video</p>
@@ -83,6 +120,8 @@ export default async function EventPageContent({
       )}
 
       <br />
+
+      {/* Guest List */}
       <div className="flex items-center justify-between">
         <p className="text-2xl font-semibold">Guest List</p>
         <ExportGuestsCSV

@@ -141,47 +141,70 @@ export async function POST(req: Request) {
       }
 
       // ── Send invitation emails ──────────────────────────────
+      // ── Send invitation emails ──────────────────────────────
 
-      const resend = new Resend(process.env.RESEND_API_KEY);
+      if (!process.env.RESEND_API_KEY) {
+        console.error("Missing RESEND_API_KEY");
+      } else {
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        const fromEmail =
+          process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 
-      const results = await Promise.allSettled(
-        uniqueGuests.map((guest) =>
-          resend.emails.send({
-            from: "invites@yourdomain.com", // must be a verified domain in Resend
-            to: guest.email,
-            subject: `You're invited to ${form.name}`,
-            html: `
-  <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-    <h2>You're invited!</h2>
-    <p>Hi ${guest.full_name},</p>
-    <p>You have been invited to <strong>${form.name}</strong>.</p>
-    <p>
-      
-        href="${publishedUrl}"
-        style="
-          display: inline-block;
-          background: #2d6a4f;
-          color: white;
-          padding: 12px 24px;
-          border-radius: 8px;
-          text-decoration: none;
-          font-weight: bold;
-        "
-      >
-        View Invitation & RSVP
-      </a>
-    </p>
-    <p style="color: #888; font-size: 0.85rem;">
-      If the button doesn't work, copy this link: ${publishedUrl}
-    </p>
-  </div>
-`,
-          }),
-        ),
-      );
+        const results = await Promise.allSettled(
+          uniqueGuests.map((guest) =>
+            resend.emails.send({
+              from: fromEmail,
+              to: guest.email,
+              subject: `You're invited to ${form.name}`,
+              html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; line-height: 1.6; color: #1f2937;">
+            <h2 style="margin-bottom: 16px;">You're invited!</h2>
+
+            <p>Hi ${guest.full_name},</p>
+
+            <p>
+              You have been invited to <strong>${form.name}</strong>.
+            </p>
+
+            <p>
+              Click the button below to view the invitation and RSVP:
+            </p>
+
+            <p style="margin: 24px 0;">
+              <a
+                href="${publishedUrl}"
+                style="
+                  display: inline-block;
+                  background: #2d6a4f;
+                  color: #ffffff;
+                  padding: 12px 24px;
+                  border-radius: 8px;
+                  text-decoration: none;
+                  font-weight: bold;
+                "
+              >
+                View Invitation & RSVP
+              </a>
+            </p>
+
+            <p style="font-size: 14px; color: #6b7280;">
+              If the button doesn't work, copy and paste this link into your browser:
+            </p>
+
+            <p style="font-size: 14px; word-break: break-all; color: #2563eb;">
+              ${publishedUrl}
+            </p>
+          </div>
+        `,
+            }),
+          ),
+        );
+
+        console.log("Email results:", JSON.stringify(results, null, 2));
+      }
+
       // ───────────────────────────────────────────────────────
-      console.log("Email results:", JSON.stringify(results, null, 2));
-
+      // ───────────────────────────────────────────────────────
     }
 
     return NextResponse.json({
