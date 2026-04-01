@@ -36,6 +36,7 @@ const initialForm: EventTemplateData = {
   main_image_url: "",
   video_url: "",
   google_maps_link: "",
+  color_palette: undefined,
 };
 
 type EventFormErrors = Partial<Record<keyof EventTemplateData, string>>;
@@ -77,15 +78,16 @@ export default function NewEventPage() {
     return getTemplateComponent(selectedTemplate?.key);
   }, [selectedTemplate]);
 
-  const previewData = useMemo<EventTemplateData>(
+  const previewData = useMemo<EventTemplateData & { id: string }>(
     () => ({
       ...form,
       main_image_url: mainImagePreview || form.main_image_url,
+      id: selectedTemplateId || "",
       color_palette_id: selectedColorPaletteId,
     }),
-    [form, mainImagePreview, selectedColorPaletteId],
-  );
 
+    [form, mainImagePreview, selectedTemplateId, selectedColorPaletteId],
+  );
 
   const resetFormState = () => {
     setGuests([{ full_name: "", email: "" }]);
@@ -366,79 +368,78 @@ export default function NewEventPage() {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
-const handleCreateEvent = async () => {
-  if (!selectedTemplateId) return;
-  if (!validateForm()) return;
-  if (!validateGuests()) return;
+  const handleCreateEvent = async () => {
+    if (!selectedTemplateId) return;
+    if (!validateForm()) return;
+    if (!validateGuests()) return;
 
-  setSubmitting(true);
+    setSubmitting(true);
 
-  try {
-    let uploadedImageUrl = form.main_image_url || "";
+    try {
+      let uploadedImageUrl = form.main_image_url || "";
 
-    if (mainImageFile) {
-      setUploadingImage(true);
+      if (mainImageFile) {
+        setUploadingImage(true);
 
-      const fileExt = mainImageFile.name.split(".").pop() || "jpg";
-      const fileName = `${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2)}.${fileExt}`;
-      const filePath = `events/${fileName}`;
+        const fileExt = mainImageFile.name.split(".").pop() || "jpg";
+        const fileName = `${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2)}.${fileExt}`;
+        const filePath = `events/${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from("event-images")
-        .upload(filePath, mainImageFile, {
-          cacheControl: "3600",
-          upsert: false,
-        });
+        const { error: uploadError } = await supabase.storage
+          .from("event-images")
+          .upload(filePath, mainImageFile, {
+            cacheControl: "3600",
+            upsert: false,
+          });
 
-      if (uploadError) {
-        alert(uploadError.message || "Failed to upload image.");
+        if (uploadError) {
+          alert(uploadError.message || "Failed to upload image.");
+          return;
+        }
+
+        const { data } = supabase.storage
+          .from("event-images")
+          .getPublicUrl(filePath);
+
+        uploadedImageUrl = data.publicUrl;
+      }
+
+      const response = await fetch("/api/events/publish", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          selectedTemplateId,
+          colorPaletteId: selectedColorPaletteId,
+          form: {
+            ...form,
+            main_image_url: uploadedImageUrl,
+          },
+          guests,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        alert(result.error || "Failed to publish event.");
         return;
       }
 
-      const { data } = supabase.storage
-        .from("event-images")
-        .getPublicUrl(filePath);
-
-      uploadedImageUrl = data.publicUrl;
+      // alert("Event published successfully.");
+      console.log("Published URL:", result.publishedUrl);
+      router.replace("/dashboard/events");
+    } catch (error) {
+      console.log(error);
+      // alert("Something went wrong.");
+    } finally {
+      setUploadingImage(false);
+      setSubmitting(false);
     }
-
-    const response = await fetch("/api/events/publish", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        selectedTemplateId,
-        colorPaletteId: selectedColorPaletteId,
-        form: {
-          ...form,
-          main_image_url: uploadedImageUrl,
-        },
-        guests,
-      }),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      alert(result.error || "Failed to publish event.");
-      return;
-    }
-
-    // alert("Event published successfully.");
-    console.log("Published URL:", result.publishedUrl);
-router.replace("/dashboard/events");
-  } catch (error) {
-
-    console.log(error);
-    // alert("Something went wrong.");
-  } finally {
-    setUploadingImage(false);
-    setSubmitting(false);
-  }
-};
+  };
 
   return (
     <div className="mx-auto w-full max-w-7xl px-6 py-10">
@@ -483,7 +484,7 @@ router.replace("/dashboard/events");
       {currentStep === 3 && (
         <EventPreview
           templateComponent={SelectedTemplateComponent}
-          data={previewData}
+          data={previewData as EventTemplateData & { id: string }}
         />
       )}
 

@@ -3,17 +3,21 @@
 import type { EventTemplateData } from "@/lib/events/template-preview";
 import type { ComponentType } from "react";
 
+type PreviewEventData = EventTemplateData & {
+  id: string;
+};
+
 type Props = {
-  templateComponent: ComponentType<{ data: EventTemplateData }> | null;
-  data: EventTemplateData;
+  templateComponent: ComponentType<{ data: PreviewEventData }> | null;
+  data: PreviewEventData;
 };
 
 export default function EventPreview({
   templateComponent: TemplateComponent,
   data,
 }: Props) {
-
   console.log("Rendering EventPreview with templateComponent:", TemplateComponent);
+
   if (!TemplateComponent) {
     return (
       <div className="rounded-xl border border-dashed p-10 text-center text-sm text-muted-foreground">

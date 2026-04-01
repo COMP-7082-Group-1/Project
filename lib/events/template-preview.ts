@@ -13,7 +13,7 @@ export type EventTemplateData = {
   video_url: string;
   google_maps_link: string;
   color_palette_id?: string | null;
-  color_palette?: ColorPalette;
+  color_palette?: ColorPalette | string | null;
 };
 
 export type TemplateRecord = {

@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export function SignUpForm({
@@ -26,6 +26,9 @@ export function SignUpForm({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const redirectTo = searchParams.get("redirectTo") || "/dashboard";
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,11 +47,11 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: `${window.location.origin}${redirectTo}`,
         },
       });
       if (error) throw error;
-      router.push("/auth/sign-up-success");
+      router.push("/auth/sign-up-success?redirectTo=" + encodeURIComponent(redirectTo));
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -60,8 +63,12 @@ export function SignUpForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="rounded-3xl border-slate-200/70 bg-white/90 shadow-2xl shadow-slate-200/60 backdrop-blur">
         <CardHeader className="space-y-2 pb-2">
-          <CardTitle className="text-3xl tracking-tight text-slate-900">Create account</CardTitle>
-          <CardDescription>Set up your account to start managing events.</CardDescription>
+          <CardTitle className="text-3xl tracking-tight text-slate-900">
+            Create account
+          </CardTitle>
+          <CardDescription>
+            Set up your account to start managing events.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignUp}>
@@ -122,7 +129,7 @@ export function SignUpForm({
             <div className="mt-6 text-center text-sm text-slate-600">
               Already have an account?{" "}
               <Link
-                href="/auth/login"
+                href={`/auth/login${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`}
                 className="font-medium text-red-600 underline-offset-4 transition hover:text-red-700 hover:underline"
               >
                 Sign in
