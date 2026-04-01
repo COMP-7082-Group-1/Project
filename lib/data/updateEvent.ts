@@ -15,6 +15,7 @@ interface UpdateEventData {
   main_image_url: string;
   video_url: string;
   google_maps_link: string;
+  color_palette?: string | null;
 }
 
 export async function updateEvent(eventId: string, eventData: UpdateEventData) {
