@@ -66,7 +66,7 @@ export const DashboardSidebar = () => {
       <div className="flex flex-col gap-1">
         <DashboardSidebarItem
           label="Help"
-          href="#"
+          href="/help"
           icon={<HelpCircle className="h-4 w-4" />}
           isActive={false}
         />

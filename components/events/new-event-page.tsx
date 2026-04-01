@@ -10,6 +10,7 @@ import { getTemplateComponent } from "@/lib/events/template-registry";
 import GuestListForm, {
   type GuestFormItem,
 } from "@/components/events/guest-list-form";
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import type {
   EventTemplateData,
@@ -50,6 +51,8 @@ export default function NewEventPage() {
 
   const [mainImageFile, setMainImageFile] = useState<File | null>(null);
   const [mainImagePreview, setMainImagePreview] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [startClock, setStartClock] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
   const [templates, setTemplates] = useState<Template[]>([]);
   const [loadingTemplates, setLoadingTemplates] = useState(true);
@@ -57,6 +60,9 @@ export default function NewEventPage() {
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
     null,
   );
+  const [selectedColorPaletteId, setSelectedColorPaletteId] = useState<
+    string | null
+  >(null);
   const [form, setForm] = useState<EventTemplateData>(initialForm);
   const [errors, setErrors] = useState<EventFormErrors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -76,27 +82,31 @@ export default function NewEventPage() {
       ...form,
       main_image_url: mainImagePreview || form.main_image_url,
       id: selectedTemplateId || "",
+      color_palette_id: selectedColorPaletteId,
     }),
-    [form, mainImagePreview, selectedTemplateId],
+
+    [form, mainImagePreview, selectedTemplateId, selectedColorPaletteId],
   );
 
-
   const resetFormState = () => {
-  setGuests([{ full_name: "", email: "" }]);
-  setGuestListError("");
-  setMainImageFile(null);
-  setMainImagePreview("");
-  setCurrentStep(1);
-  setSelectedTemplateId(null);
-  setForm(initialForm);
-  setErrors({});
-  setSubmitting(false);
-  setUploadingImage(false);
-};
+    setGuests([{ full_name: "", email: "" }]);
+    setGuestListError("");
+    setMainImageFile(null);
+    setMainImagePreview("");
+    setStartDate("");
+    setStartClock("");
+    setCurrentStep(1);
+    setSelectedTemplateId(null);
+    setSelectedColorPaletteId(null);
+    setForm(initialForm);
+    setErrors({});
+    setSubmitting(false);
+    setUploadingImage(false);
+  };
 
-useEffect(() => {
-  resetFormState();
-}, []);
+  useEffect(() => {
+    resetFormState();
+  }, []);
   useEffect(() => {
     const loadTemplates = async () => {
       setLoadingTemplates(true);
@@ -147,6 +157,28 @@ useEffect(() => {
       ...prev,
       [name]: "",
     }));
+  };
+
+  const syncStartTime = (date: string, time: string) => {
+    setForm((prev) => ({
+      ...prev,
+      start_time: date && time ? `${date}T${time}` : "",
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      start_time: "",
+    }));
+  };
+
+  const handleStartDateChange = (value: string) => {
+    setStartDate(value);
+    syncStartTime(value, startClock);
+  };
+
+  const handleStartClockChange = (value: string) => {
+    setStartClock(value);
+    syncStartTime(startDate, value);
   };
 
   const handleAddGuest = () => {
@@ -209,10 +241,6 @@ useEffect(() => {
 
     setGuestListError("");
     return true;
-  };
-
-  const isValidEmail = (value: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   };
 
   const isValidUrl = (value: string) => {
@@ -339,78 +367,78 @@ useEffect(() => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
-const handleCreateEvent = async () => {
-  if (!selectedTemplateId) return;
-  if (!validateForm()) return;
-  if (!validateGuests()) return;
+  const handleCreateEvent = async () => {
+    if (!selectedTemplateId) return;
+    if (!validateForm()) return;
+    if (!validateGuests()) return;
 
-  setSubmitting(true);
+    setSubmitting(true);
 
-  try {
-    let uploadedImageUrl = form.main_image_url || "";
+    try {
+      let uploadedImageUrl = form.main_image_url || "";
 
-    if (mainImageFile) {
-      setUploadingImage(true);
+      if (mainImageFile) {
+        setUploadingImage(true);
 
-      const fileExt = mainImageFile.name.split(".").pop() || "jpg";
-      const fileName = `${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2)}.${fileExt}`;
-      const filePath = `events/${fileName}`;
+        const fileExt = mainImageFile.name.split(".").pop() || "jpg";
+        const fileName = `${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2)}.${fileExt}`;
+        const filePath = `events/${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from("event-images")
-        .upload(filePath, mainImageFile, {
-          cacheControl: "3600",
-          upsert: false,
-        });
+        const { error: uploadError } = await supabase.storage
+          .from("event-images")
+          .upload(filePath, mainImageFile, {
+            cacheControl: "3600",
+            upsert: false,
+          });
 
-      if (uploadError) {
-        alert(uploadError.message || "Failed to upload image.");
+        if (uploadError) {
+          alert(uploadError.message || "Failed to upload image.");
+          return;
+        }
+
+        const { data } = supabase.storage
+          .from("event-images")
+          .getPublicUrl(filePath);
+
+        uploadedImageUrl = data.publicUrl;
+      }
+
+      const response = await fetch("/api/events/publish", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          selectedTemplateId,
+          colorPaletteId: selectedColorPaletteId,
+          form: {
+            ...form,
+            main_image_url: uploadedImageUrl,
+          },
+          guests,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        alert(result.error || "Failed to publish event.");
         return;
       }
 
-      const { data } = supabase.storage
-        .from("event-images")
-        .getPublicUrl(filePath);
-
-      uploadedImageUrl = data.publicUrl;
+      // alert("Event published successfully.");
+      console.log("Published URL:", result.publishedUrl);
+      router.replace("/dashboard/events");
+    } catch (error) {
+      console.log(error);
+      // alert("Something went wrong.");
+    } finally {
+      setUploadingImage(false);
+      setSubmitting(false);
     }
-
-    const response = await fetch("/api/events/publish", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        selectedTemplateId,
-        form: {
-          ...form,
-          main_image_url: uploadedImageUrl,
-        },
-        guests,
-      }),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      alert(result.error || "Failed to publish event.");
-      return;
-    }
-
-    // alert("Event published successfully.");
-    console.log("Published URL:", result.publishedUrl);
-router.replace("/dashboard/events");
-  } catch (error) {
-
-    console.log(error);
-    // alert("Something went wrong.");
-  } finally {
-    setUploadingImage(false);
-    setSubmitting(false);
-  }
-};
+  };
 
   return (
     <div className="mx-auto w-full max-w-7xl px-6 py-10">
@@ -438,18 +466,24 @@ router.replace("/dashboard/events");
       {currentStep === 2 && (
         <EventDetailsForm
           form={form}
+          startDate={startDate}
+          startClock={startClock}
           errors={errors}
           uploadingImage={uploadingImage}
+          colorPaletteId={selectedColorPaletteId}
           onInputChange={handleInputChange}
+          onStartDateChange={handleStartDateChange}
+          onStartClockChange={handleStartClockChange}
           onMainImageChange={handleMainImageChange}
           mainImagePreview={mainImagePreview}
+          onColorPaletteChange={setSelectedColorPaletteId}
         />
       )}
 
       {currentStep === 3 && (
         <EventPreview
           templateComponent={SelectedTemplateComponent}
-          data={previewData as EventTemplateData}
+          data={previewData as EventTemplateData & { id: string }}
         />
       )}
 
@@ -464,32 +498,30 @@ router.replace("/dashboard/events");
       )}
 
       <div className="mt-10 flex items-center justify-between border-t pt-6">
-        <button
+        <Button
           type="button"
           onClick={prevStep}
+          variant="outline"
           disabled={currentStep === 1 || uploadingImage || submitting}
-          className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
         >
           Back
-        </button>
+        </Button>
         {currentStep < 4 ? (
-          <button
+          <Button
             type="button"
             onClick={nextStep}
             disabled={uploadingImage || submitting}
-            className="rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Continue
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             type="button"
             onClick={handleCreateEvent}
             disabled={submitting || uploadingImage}
-            className="rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {submitting ? "Publishing..." : "Publish Event"}
-          </button>
+          </Button>
         )}
       </div>
     </div>

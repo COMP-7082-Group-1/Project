@@ -9,6 +9,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { User, Settings, LogOut, ChevronDown } from "lucide-react";
 import { logout } from "@/lib/auth";
 
@@ -17,7 +19,12 @@ export function ProfileDropdown() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-red-200 hover:text-red-700">
+      <DropdownMenuTrigger
+        className={cn(
+          buttonVariants({ variant: "outline", size: "default" }),
+          "text-slate-700",
+        )}
+      >
         Profile
         <ChevronDown className="h-4 w-4" />
       </DropdownMenuTrigger>

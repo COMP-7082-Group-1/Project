@@ -3,47 +3,10 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  Calendar,
-  Users,
-  Sparkles,
-  CheckCircle,
-  ArrowRight,
-  Heart,
-  BarChart3,
-} from "lucide-react";
+import { Calendar, CheckCircle, ArrowRight, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
-  const features = [
-    {
-      icon: Calendar,
-      title: "Beautiful RSVP Pages",
-      description: "Create stunning, customizable event pages that match your style",
-    },
-    {
-      icon: Users,
-      title: "Guest Management",
-      description: "Track responses, plus-ones, and dietary restrictions effortlessly",
-    },
-    {
-      icon: Sparkles,
-      title: "Custom Branding",
-      description: "Choose colors, upload images, and add custom questions",
-    },
-    {
-      icon: BarChart3,
-      title: "Real-time Analytics",
-      description: "Monitor RSVPs and attendance stats as they come in",
-    },
-  ];
-
-  const steps = [
-    { number: "01", title: "Create Event", description: "Set up your event details in minutes" },
-    { number: "02", title: "Share Link", description: "Send your custom RSVP link to guests" },
-    { number: "03", title: "Track RSVPs", description: "Watch responses roll in real-time" },
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/30">
       {/* Hero */}
@@ -76,21 +39,14 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/dashboard/events">
-                <Button
-                  size="lg"
-                  className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-6 text-lg gap-2 rounded-xl shadow-lg shadow-slate-900/20"
-                >
+                <Button size="lg" className="gap-2">
                   Create Your Event
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
 
               <Link href="/dashboard">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="px-8 py-6 text-lg rounded-xl border-2"
-                >
+                <Button size="lg" variant="outline">
                   View Dashboard
                 </Button>
               </Link>
@@ -114,7 +70,7 @@ export default function Home() {
               <div className="grid sm:grid-cols-3 gap-6">
                 <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 text-white">
                   <Calendar className="w-8 h-8 mb-4 text-orange-400" />
-                  <p className="text-3xl font-bold">Sarah's Wedding</p>
+                  <p className="text-3xl font-bold">Sarah&apos;s Wedding</p>
                   <p className="text-slate-400 mt-2">June 15, 2026</p>
                 </div>
 

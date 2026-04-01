@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { form, guests, selectedTemplateId } = body;
+    const { form, guests, selectedTemplateId, colorPaletteId } = body;
 
     if (!form?.name) {
       return NextResponse.json({ error: "Missing form.name" }, { status: 400 });
@@ -54,6 +54,7 @@ export async function POST(req: Request) {
           main_image_url: form.main_image_url || null,
           video_url: form.video_url || null,
           google_maps_link: form.google_maps_link || null,
+          color_palette: colorPaletteId || null,
           slug,
           published_url: publishedUrl,
           is_published: true,

@@ -1,23 +1,36 @@
 import type { EventTemplateData } from "@/lib/events/template-preview";
+import { ColorPaletteSelector } from "./color-palette-selector";
 
 type EventDetailsFormProps = {
   form: EventTemplateData;
+  startDate: string;
+  startClock: string;
   uploadingImage: boolean;
   mainImagePreview: string;
+  colorPaletteId?: string | null;
   errors: Partial<Record<keyof EventTemplateData, string>>;
   onInputChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
+  onStartDateChange: (value: string) => void;
+  onStartClockChange: (value: string) => void;
   onMainImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onColorPaletteChange?: (value: string) => void;
 };
 
 export default function EventDetailsForm({
   form,
+  startDate,
+  startClock,
   errors,
   uploadingImage,
+  colorPaletteId,
   onInputChange,
+  onStartDateChange,
+  onStartClockChange,
   mainImagePreview,
   onMainImageChange,
+  onColorPaletteChange,
 }: EventDetailsFormProps) {
   const inputClassName =
     "w-full rounded-lg border border-input bg-background px-4 py-3 outline-none transition focus:border-primary";
@@ -51,18 +64,29 @@ export default function EventDetailsForm({
         </div>
 
         <div className="space-y-2" data-field="start_time">
-          <label htmlFor="start_time" className="text-sm font-medium">
+          <label htmlFor="start_date" className="text-sm font-medium">
             Start Time
           </label>
-          <input
-            id="start_time"
-            required
-            type="datetime-local"
-            name="start_time"
-            value={form.start_time}
-            onChange={onInputChange}
-            className={inputClassName}
-          />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <input
+              id="start_date"
+              required
+              type="date"
+              name="start_date"
+              value={startDate}
+              onChange={(e) => onStartDateChange(e.target.value)}
+              className={inputClassName}
+            />
+            <input
+              id="start_time"
+              required
+              type="time"
+              name="start_time"
+              value={startClock}
+              onChange={(e) => onStartClockChange(e.target.value)}
+              className={inputClassName}
+            />
+          </div>
           {errors.start_time && (
             <p className={errorClassName}>{errors.start_time}</p>
           )}
@@ -230,6 +254,15 @@ export default function EventDetailsForm({
           />
           {errors.video_url && (
             <p className={errorClassName}>{errors.video_url}</p>
+          )}
+        </div>
+
+        <div className="lg:col-span-2">
+          {onColorPaletteChange && (
+            <ColorPaletteSelector
+              value={colorPaletteId}
+              onChange={onColorPaletteChange}
+            />
           )}
         </div>
       </div>
