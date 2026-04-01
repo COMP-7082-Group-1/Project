@@ -36,6 +36,7 @@ export function StatCard({
   action,
 }: StatCardProps) {
   const bgClass = userRsvpStatus ? (rsvpBgClass[userRsvpStatus] ?? "") : "";
+  console.log("StatCard userRsvpStatus:", userRsvpStatus, "bgClass:", bgClass);
   const content = (
     <div className="flex flex-row gap-6">
       {/* Left */}
@@ -52,6 +53,12 @@ export function StatCard({
 
       {/* Right */}
       <div className="flex flex-col gap-2 flex-1">
+        {userRsvpStatus && (
+          <div className="text-lg">Your status: {userRsvpStatus}</div>
+        )}
+        {userRsvpStatus == null && (
+          <div className="text-lg">This is your event!</div>
+        )}
         <div className="text-lg text-muted-foreground">Invited: {invited}</div>
         <div className="text-lg text-muted-foreground">
           Accepted: {accepted}
