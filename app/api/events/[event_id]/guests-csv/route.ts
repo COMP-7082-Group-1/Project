@@ -38,7 +38,7 @@ export async function GET(
 
   const { data: guests, error: guestsError } = await supabase
     .from("guests")
-    .select("rsvp_status, rsvp_response_time, users!inner(full_name, email)")
+    .select("rsvp_status, rsvp_response_time, users(full_name, email)")
     .eq("event_id", event_id)
     .order("created_at", { ascending: false });
 
