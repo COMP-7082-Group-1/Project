@@ -41,15 +41,11 @@ export default function DashboardLayout({
             </Link>
 
             <div className="flex items-center gap-3">
-              <Button
-                asChild
-                size="sm"
-                className="hidden sm:inline-flex"
-              >
-                <Link href="/dashboard/events/new">
+              <Button asChild size="sm" className="hidden sm:inline-flex">
+                {/* <Link href="/dashboard/events/new">
                   <Plus className="h-4 w-4" />
                   Create Event
-                </Link>
+                </Link> */}
               </Button>
               <ProfileDropdown />
             </div>
@@ -86,27 +82,30 @@ export default function DashboardLayout({
             </div>
 
             <div className="flex flex-wrap items-center gap-5 text-sm text-slate-500">
-              <Link href="/dashboard" className="transition hover:text-[#c8242b]">
+              {/* <Link
+                href="/dashboard"
+                className="transition hover:text-[#c8242b]"
+              >
                 Dashboard
-              </Link>
-              <Link
+              </Link> */}
+              {/* <Link
                 href="/dashboard/events"
                 className="transition hover:text-[#c8242b]"
               >
                 Events
-              </Link>
+              </Link> */}
               <Link href="/privacy" className="transition hover:text-[#c8242b]">
                 Privacy
               </Link>
               <Link href="/terms" className="transition hover:text-[#c8242b]">
                 Terms
               </Link>
-              <Link
+              {/* <Link
                 href="/dashboard/settings"
                 className="transition hover:text-[#c8242b]"
               >
                 Settings
-              </Link>
+              </Link> */}
               <ThemeSwitcher />
             </div>
           </div>

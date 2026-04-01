@@ -22,6 +22,7 @@ type DashboardEvent = {
   country: string | null;
   start_time: string;
   guests: GuestWithStatus[] | null;
+  userRsvpStatus?: string | null;
 };
 
 type OwnershipFilter = "all" | "owned" | "invited";
@@ -163,6 +164,7 @@ export function DashboardEventFilters({
                   accepted={countByStatus(event.guests, "accepted")}
                   declined={countByStatus(event.guests, "declined")}
                   maybe={countByStatus(event.guests, "maybe")}
+                  userRsvpStatus={event.userRsvpStatus ?? undefined}
                   action={
                     isOwned ? (
                       <div className="flex items-center gap-1">
