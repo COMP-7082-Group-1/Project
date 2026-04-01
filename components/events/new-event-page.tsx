@@ -36,6 +36,7 @@ const initialForm: EventTemplateData = {
   main_image_url: "",
   video_url: "",
   google_maps_link: "",
+  color_palette: undefined,
 };
 
 type EventFormErrors = Partial<Record<keyof EventTemplateData, string>>;
