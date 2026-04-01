@@ -17,14 +17,6 @@ export default function Events() {
       >
         <EventsManager />
       </Suspense>
-
-      {/* Recent Events */}
-      {/* <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold">Recent Events</h2>
-        <div className="border rounded-lg p-8 text-center text-muted-foreground">
-          <p>No events yet. Create your first event to get started!</p>
-        </div>
-      </div> */}
     </div>
   );
 }
