@@ -36,7 +36,6 @@ export function StatCard({
   action,
 }: StatCardProps) {
   const bgClass = userRsvpStatus ? (rsvpBgClass[userRsvpStatus] ?? "") : "";
-  console.log("StatCard userRsvpStatus:", userRsvpStatus, "bgClass:", bgClass);
   const content = (
     <div className="flex flex-row gap-6">
       {/* Left */}
