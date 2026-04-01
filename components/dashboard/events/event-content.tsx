@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/auth";
 import { getEventByID } from "@/lib/data/eventByID";
 import { getGuestsByEventID } from "@/lib/data/guestsByEventID";
 import RsvpButton from "@/components/dashboard/events/rsvp-button";
+import ExportGuestsCSV from "@/components/dashboard/events/export-guests-csv";
 
 export default async function EventPageContent({
   params,
@@ -82,7 +83,13 @@ export default async function EventPageContent({
       )}
 
       <br />
-      <p className="text-2xl font-semibold">Guest List</p>
+      <div className="flex items-center justify-between">
+        <p className="text-2xl font-semibold">Guest List</p>
+        <ExportGuestsCSV
+          guests={sortedGuests}
+          eventName={event.name ?? event.title ?? "event"}
+        />
+      </div>
 
       <table className="w-full text-sm border-collapse">
         <thead>
