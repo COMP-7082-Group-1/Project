@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Plus } from "lucide-react";
@@ -54,7 +55,10 @@ export default function DashboardLayout({
 
         <div className="mx-auto flex w-full max-w-7xl flex-1 overflow-hidden px-4 py-6 sm:px-6">
           <div className="flex flex-1 overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-            <DashboardSidebar />
+            <Suspense fallback={<div className="w-56 shrink-0 border-r" />}>
+              <DashboardSidebar />
+            </Suspense>
+
             <div className="flex-1 border-l border-slate-200/70 bg-white p-6 sm:p-8">
               {children}
             </div>
@@ -82,30 +86,12 @@ export default function DashboardLayout({
             </div>
 
             <div className="flex flex-wrap items-center gap-5 text-sm text-slate-500">
-              {/* <Link
-                href="/dashboard"
-                className="transition hover:text-[#c8242b]"
-              >
-                Dashboard
-              </Link> */}
-              {/* <Link
-                href="/dashboard/events"
-                className="transition hover:text-[#c8242b]"
-              >
-                Events
-              </Link> */}
               <Link href="/privacy" className="transition hover:text-[#c8242b]">
                 Privacy
               </Link>
               <Link href="/terms" className="transition hover:text-[#c8242b]">
                 Terms
               </Link>
-              {/* <Link
-                href="/dashboard/settings"
-                className="transition hover:text-[#c8242b]"
-              >
-                Settings
-              </Link> */}
               <ThemeSwitcher />
             </div>
           </div>

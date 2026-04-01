@@ -57,7 +57,7 @@ export async function GET(
     "RSVP Time",
   ]);
 
-  const rows = (guests ?? []).map((guest) =>
+  const rows = (guests ?? []).map((guest: any) =>
     formatCsvRow([
       guest.users?.full_name ?? "",
       guest.users?.email ?? "",

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { SignUpForm } from "@/components/sign-up-form";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,7 +24,9 @@ export default function Page() {
                   priority
                 />
               </div>
-              <span className="text-lg font-semibold tracking-tight text-slate-900">Event Tap</span>
+              <span className="text-lg font-semibold tracking-tight text-slate-900">
+                Event Tap
+              </span>
             </Link>
 
             <div className="mt-10 max-w-xl">
@@ -73,9 +76,14 @@ export default function Page() {
                   className="object-contain"
                   priority
                 />
-                <span className="text-lg font-semibold tracking-tight text-slate-900">Event Tap</span>
+                <span className="text-lg font-semibold tracking-tight text-slate-900">
+                  Event Tap
+                </span>
               </div>
-              <SignUpForm />
+
+              <Suspense fallback={<div className="h-96 rounded-3xl bg-white/80" />}>
+                <SignUpForm />
+              </Suspense>
             </div>
           </section>
         </div>
