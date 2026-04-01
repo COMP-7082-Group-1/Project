@@ -39,23 +39,6 @@ const initialForm: EventTemplateData = {
   color_palette: undefined,
 };
 
-const templatePreviewFallback: EventTemplateData = {
-  name: "Alex & Jordan Celebration",
-  description:
-    "Join us for an unforgettable evening filled with music, dinner, and a beautiful celebration with family and friends.",
-  address: "125 Garden Terrace",
-  city: "Vancouver",
-  state: "BC",
-  postal_code: "V6B 1A1",
-  country: "Canada",
-  start_time: "2026-08-22T17:30",
-  main_image_url:
-    "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
-  video_url: "",
-  google_maps_link: "https://maps.google.com/",
-  color_palette_id: "green_forest",
-};
-
 type EventFormErrors = Partial<Record<keyof EventTemplateData, string>>;
 
 export default function NewEventPage() {
@@ -102,19 +85,8 @@ export default function NewEventPage() {
       id: selectedTemplateId || "",
       color_palette_id: selectedColorPaletteId,
     }),
-    [form, mainImagePreview, selectedTemplateId, selectedColorPaletteId],
-  );
 
-  const templateSelectionPreviewData = useMemo<EventTemplateData>(
-    () => ({
-      ...templatePreviewFallback,
-      ...Object.fromEntries(
-        Object.entries(previewData).filter(([, value]) => value),
-      ),
-      color_palette_id:
-        selectedColorPaletteId || previewData.color_palette_id || "green_forest",
-    }),
-    [previewData, selectedColorPaletteId],
+    [form, mainImagePreview, selectedTemplateId, selectedColorPaletteId],
   );
 
   const resetFormState = () => {
@@ -488,8 +460,6 @@ export default function NewEventPage() {
           templates={templates}
           loadingTemplates={loadingTemplates}
           selectedTemplateId={selectedTemplateId}
-          previewData={templateSelectionPreviewData}
-          previewTemplateComponent={SelectedTemplateComponent}
           onSelect={setSelectedTemplateId}
         />
       )}

@@ -3,7 +3,6 @@ import { requireUser } from "@/lib/auth";
 import { getEventByID } from "@/lib/data/eventByID";
 import { getGuestsByEventID } from "@/lib/data/guestsByEventID";
 import RsvpButton from "@/components/dashboard/events/rsvp-button";
-import { Button } from "@/components/ui/button";
 
 export default async function EventPageContent({
   params,
@@ -82,14 +81,8 @@ export default async function EventPageContent({
         </div>
       )}
 
-      <div className="mt-4 flex items-center justify-between gap-4">
-        <p className="text-2xl font-semibold">Guest List</p>
-        {user.id === event.owner_user_id ? (
-          <Button asChild variant="outline" size="sm">
-            <a href={`/api/events/${event_id}/guests-csv`}>Download CSV</a>
-          </Button>
-        ) : null}
-      </div>
+      <br />
+      <p className="text-2xl font-semibold">Guest List</p>
 
       <table className="w-full text-sm border-collapse">
         <thead>
