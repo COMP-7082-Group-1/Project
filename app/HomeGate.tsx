@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export default async function HomeGate() {
   const supabase = await createClient();
-  const { data } = await supabase.auth.getClaims();
+  const { data } = await supabase?.auth?.getClaims();
   const user = data?.claims;
 
   if (user) {
