@@ -51,6 +51,8 @@ export async function publishEvent({
 
   const supabase = await createClient();
 
+  // Append a timestamp to the slugified name to guarantee uniqueness,
+  // even if two events share the same name 
   const slug = `${slugify(form.name, { lower: true, strict: true })}-${Date.now()}`;
   const publishedUrl = `${process.env.NEXT_PUBLIC_APP_URL}/events/${slug}`;
 
@@ -86,6 +88,8 @@ export async function publishEvent({
     throw new Error(eventError.message);
   }
 
+  // Normalise guest entries: trim whitespace, lowercase emails, then drop
+  // any row that is missing either a name or an email address.
   const cleanedGuests: GuestInput[] = (guests || [])
     .map((guest) => ({
       full_name: guest.full_name?.trim() || "",
@@ -94,12 +98,15 @@ export async function publishEvent({
     .filter((guest) => guest.full_name && guest.email);
 
   if (cleanedGuests.length > 0) {
+    // Deduplicate by email, where last entry for a given address wins.
     const uniqueGuests = Array.from(
       new Map(cleanedGuests.map((guest) => [guest.email, guest])).values(),
     );
 
     const guestEmails = uniqueGuests.map((guest) => guest.email);
 
+    // Look up which guest emails already belong to registered users so we
+    // can link the guest row to an existing user_id where possible.
     const { data: matchedUsers, error: usersError } = await supabase
       .from("users")
       .select("id, email")
@@ -116,12 +123,14 @@ export async function publishEvent({
       ]),
     );
 
+    // If the guest has a registered account, attach their user_id so the
+    // RSVP can appear in their dashboard
     const guestRows = uniqueGuests.map((guest) => ({
       event_id: event.id,
       full_name: guest.full_name,
       email: guest.email,
       user_id: userMap.get(guest.email) ?? null,
-      rsvp_status: "pending",
+      rsvp_status: "pending", 
     }));
 
     const { error: guestsError } = await supabase
@@ -137,6 +146,7 @@ export async function publishEvent({
     } else {
       const resend = new Resend(process.env.RESEND_API_KEY);
 
+      // Use allSettled so a single failed email doesn't abort the rest 
       const results = await Promise.allSettled(
       uniqueGuests.map((guest) =>
         resend.emails.send({
