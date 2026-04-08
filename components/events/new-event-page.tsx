@@ -409,7 +409,7 @@ export default function NewEventPage() {
 
       const result = await publishEvent({
         selectedTemplateId,
-        colorPaletteId: selectedColorPaletteId,
+        colorPaletteId: selectedColorPaletteId || undefined,
         form: {
           ...form,
           main_image_url: uploadedImageUrl,
@@ -417,7 +417,6 @@ export default function NewEventPage() {
         guests,
       });
 
-      console.log("Published URL:", result.publishedUrl);
       router.replace("/dashboard/events");
     } catch (error) {
       console.log(error);
