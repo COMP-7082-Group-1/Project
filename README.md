@@ -59,7 +59,7 @@ Tests are written with [Vitest](https://vitest.dev) and [Testing Library](https:
 
 ```
 EventTap
-├── Next.js (App Router)     — frontend + server-side rendering
+├── Next.js (App Router)     — client/server architecture with server-side rendering
 ├── Supabase                 — database, authentication, row-level security
 ├── Resend                   — transactional email (event invitations)
 └── Vercel                   — deployment
@@ -79,10 +79,10 @@ app/                  # Next.js App Router pages
 components/           # Reusable UI components
   dashboard/          # Dashboard-specific components
   events/             # Event form, guest list, RSVP, stat cards, templates
-  ui/                 # Base UI primitives (shadcn/ui)
+  ui/                 # Base UI (shadcn/ui)
 
 lib/
-  data/               # Server-side data access functions (Supabase queries)
+  data/               # Server-side data access functions
   supabase/           # Supabase client initialization (client, server, proxy)
   auth.ts             # Auth helper utilities
   utils.ts            # Shared utilities
@@ -102,7 +102,7 @@ supabase/             # Supabase config and migrations
 
 | Concern         | Choice                   | Reason                                                         |
 | --------------- | ------------------------ | -------------------------------------------------------------- |
-| Framework       | Next.js App Router       | Server components reduce client JS; built-in routing           |
+| Framework       | Next.js App Router       | client/server architectures
 | Database + Auth | Supabase                 | Managed Postgres with row-level security; integrated auth      |
 | Styling         | Tailwind CSS + shadcn/ui | Utility-first CSS with accessible, composable components       |
 | Email           | Resend                   | Simple API for transactional email; optional/graceful fallback |
