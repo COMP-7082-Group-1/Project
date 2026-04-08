@@ -102,7 +102,7 @@ supabase/             # Supabase config and migrations
 
 | Concern         | Choice                   | Reason                                                         |
 | --------------- | ------------------------ | -------------------------------------------------------------- |
-| Framework       | Next.js App Router       | client/server architectures
+| Framework       | Next.js App Router       | Client/server architectures                                    |
 | Database + Auth | Supabase                 | Managed Postgres with row-level security; integrated auth      |
 | Styling         | Tailwind CSS + shadcn/ui | Utility-first CSS with accessible, composable components       |
 | Email           | Resend                   | Simple API for transactional email; optional/graceful fallback |
