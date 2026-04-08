@@ -91,6 +91,10 @@ __tests__/            # Vitest unit/component tests
 supabase/             # Supabase config and migrations
 ```
 
+## Database Schema Overview
+
+![Schema Diagram](docs/schema.png)
+
 ### Data Flow
 
 1. **Authentication** — handled by Supabase Auth with cookie-based sessions via `@supabase/ssr`. Middleware validates sessions on every request.
