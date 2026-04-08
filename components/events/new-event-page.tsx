@@ -16,6 +16,7 @@ import type {
   EventTemplateData,
   TemplateRecord as Template,
 } from "@/lib/events/template-preview";
+import { publishEvent } from "@/lib/data/publishEvent";
 
 const steps = [
   { id: 1, title: "Choose Template" },
@@ -406,30 +407,16 @@ export default function NewEventPage() {
         uploadedImageUrl = data.publicUrl;
       }
 
-      const response = await fetch("/api/events/publish", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const result = await publishEvent({
+        selectedTemplateId,
+        colorPaletteId: selectedColorPaletteId,
+        form: {
+          ...form,
+          main_image_url: uploadedImageUrl,
         },
-        body: JSON.stringify({
-          selectedTemplateId,
-          colorPaletteId: selectedColorPaletteId,
-          form: {
-            ...form,
-            main_image_url: uploadedImageUrl,
-          },
-          guests,
-        }),
+        guests,
       });
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        alert(result.error || "Failed to publish event.");
-        return;
-      }
-
-      // alert("Event published successfully.");
       console.log("Published URL:", result.publishedUrl);
       router.replace("/dashboard/events");
     } catch (error) {
