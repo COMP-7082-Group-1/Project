@@ -5,7 +5,8 @@ import "./template-1.css";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import type { EventTemplateData } from "@/lib/events/template-preview";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { submitRsvp } from "@/lib/data/submitRsvp";
 import { getColorPaletteById } from "@/lib/events/color-palettes";
 
 type Props = {
@@ -43,7 +44,6 @@ export default function GreenForestTemplate({ data }: Props) {
     root.style.setProperty('--shadow-color', colorPalette?.shadow_hue);
   }, [colorPalette]);
 
-  const router = useRouter();
   const pathname = usePathname();
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
@@ -107,29 +107,16 @@ export default function GreenForestTemplate({ data }: Props) {
     setLoading(false);
   };
 
-  const submitRsvp = async () => {
+  const handleRsvp = async () => {
     if (!attendance) return;
     setLoading(true);
     setErrorMsg("");
 
-    const res = await fetch("/api/rsvp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ eventId: data.id, attendance }),
-    });
-    const result = await res.json();
-    
-    if (res.status === 401 && result.redirectTo) {
-      router.push(
-        `${result.redirectTo}?redirect=${encodeURIComponent(pathname)}`,
-      );
-      return; // stop execution
-    }
-
-    if (!res.ok) {
-      setErrorMsg(result.error || "Something went wrong.");
-    } else {
+    try {
+      await submitRsvp(data.id, attendance, pathname);
       setSubmitted(true);
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
     }
 
     setLoading(false);
@@ -449,7 +436,7 @@ export default function GreenForestTemplate({ data }: Props) {
                     <button
                       type="button"
                       className="rsvp-submit"
-                      onClick={submitRsvp}
+                      onClick={handleRsvp}
                       disabled={!attendance || loading}
                     >
                       {loading ? "Sending..." : "Send RSVP"}
