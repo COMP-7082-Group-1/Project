@@ -15,9 +15,10 @@ export default async function HomeGate() {
 
   return (
     <div className="flex-1 flex flex-col gap-8 max-w-4xl p-8 items-center justify-center text-center">
-      <h1 className="text-5xl font-bold">Welcome to Event Planner</h1>
+      <h1 className="text-5xl font-bold">Welcome to Event Tap</h1>
       <p className="text-xl text-muted-foreground max-w-2xl">
-        Plan, organize, and manage your events all in one place. Get started by creating an account.
+        Plan, organize, and manage your events all in one place. Get started by
+        creating an account.
       </p>
       <div className="flex gap-4 mt-4">
         <Button asChild size="lg">
