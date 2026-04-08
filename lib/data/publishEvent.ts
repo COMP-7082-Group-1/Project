@@ -29,6 +29,7 @@ type PublishEventInput = {
   colorPaletteId?: string;
 };
 
+// Publish a new event, along with its guest list, and send invitation emails to the guests
 export async function publishEvent({
   form,
   guests,

@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
+// Add a new guest to an event by providing their full name and email address
 export async function addGuest(
   eventId: string,
   full_name: string,

@@ -1,6 +1,7 @@
 import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
+// Find an event by its ID, including the guests invited to the event
 export async function getEventByID(event_id: string) {
   await requireUser();
   const supabase = await createClient();

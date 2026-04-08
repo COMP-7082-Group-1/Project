@@ -18,6 +18,7 @@ interface UpdateEventData {
   color_palette?: string | null;
 }
 
+// Update an event's details by its ID
 export async function updateEvent(eventId: string, eventData: UpdateEventData) {
   const supabase = await createClient();
 

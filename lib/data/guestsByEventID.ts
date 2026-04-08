@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 
+// Get all guests and their user information for a specific event
 export async function getGuestsByEventID(event_id: string) {
   const supabase = await createClient();
 

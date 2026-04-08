@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
+// Remove a guest entry by their ID
 export async function removeGuest(guestId: string, eventId: string) {
   const supabase = await createClient();
 

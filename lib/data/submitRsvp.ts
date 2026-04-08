@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
+// Submit an RSVP response for a guest to an event
 export async function submitRsvp(
   eventId: string,
   attendance: string,

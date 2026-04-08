@@ -1,6 +1,7 @@
 import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
+// Get all events that the user is an owner of
 export async function getOwnedEvents() {
   const user = await requireUser();
   const supabase = await createClient();
