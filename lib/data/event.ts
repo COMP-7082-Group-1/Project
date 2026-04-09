@@ -1,3 +1,4 @@
+/** Fetches all events for the current user — both owned events and events they are a guest on. */
 import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 

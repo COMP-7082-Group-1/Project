@@ -1,3 +1,4 @@
+/** Fetches all guests (with linked user profiles) for a given event, newest first. */
 import { createClient } from "@/lib/supabase/server";
 
 // Get all guests and their user information for a specific event

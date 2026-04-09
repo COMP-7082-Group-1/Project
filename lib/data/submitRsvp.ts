@@ -1,5 +1,6 @@
 "use server";
 
+/** Records a guest's RSVP response on a public event page; redirects to sign-up if unauthenticated. */
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 

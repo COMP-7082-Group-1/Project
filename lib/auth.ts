@@ -1,5 +1,6 @@
 "use server";
 
+/** Server-side auth helpers: enforce authentication, retrieve the current user, and sign out. */
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 

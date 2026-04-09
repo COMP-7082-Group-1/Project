@@ -1,5 +1,6 @@
 "use server";
 
+/** Creates a new event with its guest list, generates a unique slug, and emails invitations via Resend. */
 import { getUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import slugify from "slugify";

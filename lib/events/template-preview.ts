@@ -1,3 +1,4 @@
+/** Shared types for event template data and helper functions for formatting and parsing template content. */
 import type { ColorPalette } from "./color-palettes";
 
 export type EventTemplateData = {
@@ -25,6 +26,7 @@ export type TemplateRecord = {
   updated_at?: string;
 };
 
+/** Formats an ISO date string into a human-readable full date and time using the en-CA locale. */
 export function formatPreviewDate(dateString: string) {
   if (!dateString) return "";
 
@@ -37,10 +39,12 @@ export function formatPreviewDate(dateString: string) {
   }).format(date);
 }
 
+/** Escapes special regex characters in a string so it can be used safely in a RegExp constructor. */
 export function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+/** Extracts the first `((placeholder))` token from an HTML snippet, or returns null if none is found. */
 export function extractPlaceholderText(htmlSnippet: string | null | undefined) {
   if (!htmlSnippet) return null;
 

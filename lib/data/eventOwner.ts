@@ -1,3 +1,4 @@
+/** Fetches all events owned by the current user, ordered by creation date. */
 import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 

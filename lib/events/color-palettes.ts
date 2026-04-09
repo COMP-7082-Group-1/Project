@@ -1,3 +1,4 @@
+/** Color palette types, preset definitions, and lookup helpers used by event templates. */
 export type ColorPalette = {
   primary: string;
   primary_light: string;
@@ -94,6 +95,7 @@ export const COLOR_PALETTE_PRESETS: ColorPalettePreset[] = [
 
 
 
+/** Returns the ColorPalette for the given preset ID, falling back to the default green forest palette. */
 export function getColorPaletteById(
   id: string | null | undefined,
 ): ColorPalette {
@@ -102,6 +104,7 @@ export function getColorPaletteById(
   return preset ? preset.palette : DEFAULT_GREEN_FOREST_PALETTE;
 }
 
+/** Returns the full ColorPalettePreset (including name and id) for the given ID, or the first preset if unset. */
 export function getColorPalettePresetById(
   id: string | null | undefined,
 ): ColorPalettePreset | undefined {

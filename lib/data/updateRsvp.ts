@@ -1,5 +1,6 @@
 "use server";
 
+/** Updates a guest's RSVP status from the dashboard and revalidates the event detail page. */
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 

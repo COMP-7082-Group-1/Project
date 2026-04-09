@@ -1,5 +1,6 @@
 "use server";
 
+/** Adds a guest to an event by name and email, linking them to an existing user account if one exists. */
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 

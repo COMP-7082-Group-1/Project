@@ -1,5 +1,6 @@
 "use server";
 
+/** Removes a guest from an event by guest ID and revalidates the edit page cache. */
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 

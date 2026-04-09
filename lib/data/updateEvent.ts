@@ -1,5 +1,6 @@
 "use server";
 
+/** Updates an event's details in the database and revalidates the event detail page cache. */
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 

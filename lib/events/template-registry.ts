@@ -1,3 +1,4 @@
+/** Maps template keys to their React components; use `getTemplateComponent` to resolve a key at runtime. */
 import type { ComponentType } from "react";
 import GreenForestTemplate from "@/components/templates/GreenForestTemplate";
 import type { EventTemplateData } from "./template-preview";
@@ -10,6 +11,7 @@ export const templateRegistry: Record<string, EventTemplateComponent> = {
   "green_forest": GreenForestTemplate,
 };
 
+/** Returns the template component for the given key, or null if the key is missing or unregistered. */
 export function getTemplateComponent(
   key?: string | null,
 ): EventTemplateComponent | null {

@@ -1,3 +1,4 @@
+/** Fetches a single event by ID including its guests; requires an authenticated user. */
 import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
