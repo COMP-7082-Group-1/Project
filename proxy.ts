@@ -1,3 +1,4 @@
+/** Next.js middleware entry point — delegates session refresh to lib/supabase/proxy and defines the route matcher. */
 import { updateSession } from "@/lib/supabase/proxy";
 import { type NextRequest } from "next/server";
 

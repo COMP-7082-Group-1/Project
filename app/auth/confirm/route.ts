@@ -1,3 +1,4 @@
+/** GET handler for Supabase auth email callbacks (email confirmation, password reset); verifies the OTP token and redirects accordingly. */
 import { createClient } from "@/lib/supabase/server";
 import { type EmailOtpType } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";

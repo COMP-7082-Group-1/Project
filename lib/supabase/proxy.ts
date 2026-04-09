@@ -1,3 +1,4 @@
+/** Next.js middleware helper that refreshes the Supabase session cookie on every request and redirects unauthenticated users to login. */
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { hasEnvVars } from "../utils";
