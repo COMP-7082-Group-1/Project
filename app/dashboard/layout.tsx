@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Plus } from "lucide-react";
 
 import { ProfileDropdown } from "@/components/dashboard/profile-dropdown";
 import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";

@@ -1,7 +1,7 @@
 "use client";
-
+import Script from "next/script";
 import { useEffect, useState } from "react";
-import "./template-1.css";
+import "./green-forest-template.css";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import type { EventTemplateData } from "@/lib/events/template-preview";
@@ -24,7 +24,7 @@ export default function GreenForestTemplate({ data }: Props) {
   const description = data.description;
   const coupleImage = data.main_image_url;
   const videoUrl = data.video_url;
- const colorPalette: any =
+ const colorPalette =
   typeof data.color_palette === "string"
     ? getColorPaletteById(data.color_palette)
     : data.color_palette ?? (data.color_palette_id
@@ -34,14 +34,14 @@ export default function GreenForestTemplate({ data }: Props) {
   useEffect(() => {
     // Apply color palette to CSS variables
     const root = document.documentElement;
-    root.style.setProperty('--green', colorPalette?.primary);
-    root.style.setProperty('--light-green', colorPalette?.primary_light);
-    root.style.setProperty('--yellow', colorPalette?.accent);
-    root.style.setProperty('--yellow-down', colorPalette?.accent_light);
-    root.style.setProperty('--beige', colorPalette?.background);
-    root.style.setProperty('--red', colorPalette?.accent_secondary);
-    root.style.setProperty('--text', colorPalette?.text);
-    root.style.setProperty('--shadow-color', colorPalette?.shadow_hue);
+    root.style.setProperty('--green', colorPalette?.primary ?? null);
+    root.style.setProperty('--light-green', colorPalette?.primary_light ?? null);
+    root.style.setProperty('--yellow', colorPalette?.accent ?? null);
+    root.style.setProperty('--yellow-down', colorPalette?.accent_light ?? null);
+    root.style.setProperty('--beige', colorPalette?.background ?? null);
+    root.style.setProperty('--red', colorPalette?.accent_secondary ?? null);
+    root.style.setProperty('--text', colorPalette?.text ?? null);
+    root.style.setProperty('--shadow-color', colorPalette?.shadow_hue ?? null);
   }, [colorPalette]);
 
   const pathname = usePathname();
@@ -220,7 +220,7 @@ export default function GreenForestTemplate({ data }: Props) {
             />
 
             <p className="hugetext reveal" data-animation="focus-in dur-2">
-              We hope you'll join us on this special day.
+              We hope you&apos;ll join us on this special day.
             </p>
 
             <div
@@ -345,7 +345,7 @@ export default function GreenForestTemplate({ data }: Props) {
             />
 
             <p className="subtext reveal" data-animation="focus-in dur-2">
-              Please let us know if you'll be joining us.
+              Please let us know if you&apos;ll be joining us.
             </p>
 
             <div className="rsvp-form reveal" data-animation="focus-in dur-2">
@@ -464,7 +464,7 @@ export default function GreenForestTemplate({ data }: Props) {
 
           <div>
             <p className="bigtext reveal" data-animation="focus-in dur-2">
-              We can't wait to celebrate this beautiful day with you.
+              We can&apos;t wait to celebrate this beautiful day with you.
             </p>
 
             <div
@@ -480,7 +480,7 @@ export default function GreenForestTemplate({ data }: Props) {
         </section>
       </div>
 
-      <script
+      <Script 
         src="https://kit.fontawesome.com/3b059272ba.js"
         crossOrigin="anonymous"
       />

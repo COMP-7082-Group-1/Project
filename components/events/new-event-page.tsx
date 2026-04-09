@@ -407,7 +407,7 @@ export default function NewEventPage() {
         uploadedImageUrl = data.publicUrl;
       }
 
-      const result = await publishEvent({
+      await publishEvent({
         selectedTemplateId,
         colorPaletteId: selectedColorPaletteId || undefined,
         form: {
