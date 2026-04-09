@@ -1,3 +1,4 @@
+/** Clickable card linking to a dashboard action, displaying an icon, title, and description. */
 import Link from "next/link";
 
 interface ActionCardProps {

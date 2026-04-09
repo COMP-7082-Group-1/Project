@@ -1,3 +1,4 @@
+/** Server component that fetches and renders the full detail view for a single dashboard event. */
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { getEventByID } from "@/lib/data/eventByID";

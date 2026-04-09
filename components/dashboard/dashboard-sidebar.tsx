@@ -1,5 +1,6 @@
 "use client";
 
+/** Persistent sidebar navigation for all dashboard pages. */
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import {

@@ -1,5 +1,6 @@
 "use client";
 
+/** Avatar dropdown showing the current user's profile options and logout action. */
 import { useRouter } from "next/navigation";
 import {
   DropdownMenu,

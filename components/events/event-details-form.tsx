@@ -1,3 +1,4 @@
+/** Form step for entering event details such as title, date, description, and color palette. */
 import type { EventTemplateData } from "@/lib/events/template-preview";
 import { ColorPaletteSelector } from "./color-palette-selector";
 

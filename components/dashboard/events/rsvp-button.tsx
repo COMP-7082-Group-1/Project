@@ -1,5 +1,6 @@
 "use client";
 
+/** Toggle button for updating a guest's RSVP status on an event. */
 import { useState, useTransition } from "react";
 import { updateRsvp } from "@/lib/data/updateRsvp";
 

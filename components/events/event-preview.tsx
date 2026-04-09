@@ -1,5 +1,6 @@
 "use client";
 
+/** Live preview of the selected event template rendered with the current form data. */
 import type { EventTemplateData } from "@/lib/events/template-preview";
 import type { ComponentType } from "react";
 

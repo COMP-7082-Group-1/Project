@@ -1,5 +1,6 @@
 "use client";
 
+/** New account registration form that creates a Supabase user and sends a confirmation email. */
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";

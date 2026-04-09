@@ -1,3 +1,4 @@
+/** Displays a login link or logout button depending on the user's authentication state. */
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { createClient } from "@/lib/supabase/server";

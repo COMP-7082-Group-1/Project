@@ -1,5 +1,6 @@
 "use client";
 
+/** Grid of preset color palette swatches for choosing an event's color scheme. */
 import { COLOR_PALETTE_PRESETS } from "@/lib/events/color-palettes";
 
 type ColorPaletteSelectorProps = {

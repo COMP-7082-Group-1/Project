@@ -1,5 +1,6 @@
 "use client";
 
+/** Individual navigation link item rendered inside the dashboard sidebar. */
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 

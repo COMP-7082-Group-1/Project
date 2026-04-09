@@ -1,5 +1,6 @@
 "use client";
 
+/** Multi-step wizard page for creating a new event, coordinating template, details, and guest steps. */
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import EventStepper from "@/components/events/event-stepper";

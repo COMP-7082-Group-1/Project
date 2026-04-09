@@ -1,3 +1,4 @@
+/** Card displaying a single dashboard metric with a label and numeric value. */
 import { ActionWrapper } from "@/components/dashboard/action-wrapper";
 
 interface StatCardProps {

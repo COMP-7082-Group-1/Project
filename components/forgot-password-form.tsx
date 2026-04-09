@@ -1,5 +1,6 @@
 "use client";
 
+/** Form that sends a password-reset email to the provided address via Supabase Auth. */
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";

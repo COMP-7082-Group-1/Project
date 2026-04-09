@@ -1,5 +1,6 @@
 "use client";
 
+/** Search and filter controls for narrowing the event list on the dashboard. */
 import { useDeferredValue, useMemo, useState } from "react";
 import Link from "next/link";
 import { CalendarDays, ChevronDown, Search } from "lucide-react";

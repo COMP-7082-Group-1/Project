@@ -1,5 +1,6 @@
 "use client";
 
+/** Form for setting a new password after the user has followed a reset link. */
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";

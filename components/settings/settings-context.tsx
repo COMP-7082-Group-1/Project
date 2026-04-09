@@ -1,3 +1,4 @@
+/** Settings page layout listing available account settings sections with navigation links. */
 import Link from "next/link";
 import {
   LockKeyhole,

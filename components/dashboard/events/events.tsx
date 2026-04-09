@@ -1,3 +1,4 @@
+/** List of the user's events with edit and delete actions for each entry. */
 import Link from "next/link";
 import { CalendarDays } from "lucide-react";
 import { DeleteEventButton } from "@/components/dashboard/delete-event-button";

@@ -1,5 +1,6 @@
 "use client";
 
+/** Form step for adding, removing, and managing the initial guest list for a new event. */
 import { Trash2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

@@ -1,5 +1,6 @@
 "use client";
 
+/** Email/password login form with error handling and redirect on success. */
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";

@@ -1,5 +1,6 @@
 "use client";
 
+/** Inline editor for adding, removing, and updating RSVP statuses of guests on an event. */
 import { useState } from "react";
 import { addGuest } from "@/lib/data/addGuest";
 import { removeGuest } from "@/lib/data/removeGuest";

@@ -1,5 +1,6 @@
 "use client";
 
+/** Icon button that permanently deletes an event after a confirmation prompt. */
 import { Trash2 } from "lucide-react";
 import { useFormStatus } from "react-dom";
 

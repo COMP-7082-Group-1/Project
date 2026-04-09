@@ -1,5 +1,6 @@
 "use client";
 
+/** Button that navigates to the edit page for a specific event. */
 import Link from "next/link";
 import { Pencil } from "lucide-react";
 

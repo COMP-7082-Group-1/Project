@@ -1,3 +1,4 @@
+/** Animated loading spinner shown while the Green Forest event template is being rendered. */
 import "./loader.css";
 export default function LoadingGreen() {
   return (

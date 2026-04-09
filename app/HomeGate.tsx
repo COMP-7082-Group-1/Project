@@ -1,4 +1,5 @@
 // app/HomeGate.tsx
+/** Server component that redirects authenticated users to the dashboard, blocking the public home page. */
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";

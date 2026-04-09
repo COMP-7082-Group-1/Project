@@ -1,3 +1,4 @@
+/** Step indicator showing the user's progress through the multi-step event creation flow. */
 type Step = {
   id: number;
   title: string;

@@ -1,3 +1,4 @@
+/** Public-facing landing page content shown to unauthenticated visitors. */
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ThemeSwitcher } from "@/components/theme-switcher";

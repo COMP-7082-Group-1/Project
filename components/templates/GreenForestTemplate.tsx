@@ -1,4 +1,5 @@
 "use client";
+/** Green Forest event invitation template that renders a styled public-facing event page. */
 import Script from "next/script";
 import { useEffect, useState } from "react";
 import "./green-forest-template.css";

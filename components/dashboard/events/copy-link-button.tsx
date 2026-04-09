@@ -1,6 +1,7 @@
 // components/dashboard/events/copy-link-button.tsx
 "use client";
 
+/** Button that copies the public event URL to the clipboard with visual feedback. */
 import { useState } from "react";
 
 export default function CopyLinkButton({ url }: { url: string }) {

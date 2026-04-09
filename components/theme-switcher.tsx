@@ -1,5 +1,6 @@
 "use client";
 
+/** Dropdown menu for switching between light, dark, and system color themes. */
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

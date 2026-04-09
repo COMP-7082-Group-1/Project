@@ -1,5 +1,6 @@
 "use client";
 
+/** Button that downloads the event's guest list as a CSV file. */
 type Guest = {
   id: string;
   user_id: string;

@@ -1,3 +1,4 @@
+/** Grid of available event templates for the user to pick a visual design. */
 import type { TemplateRecord as Template } from "@/lib/events/template-preview";
 
 type TemplateSelectorProps = {

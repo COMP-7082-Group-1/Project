@@ -1,3 +1,4 @@
+/** Server component that loads event and guest data and renders the event edit form. */
 import { redirect } from "next/navigation";
 import { getEventByID } from "@/lib/data/eventByID";
 import { getGuestsByEventID } from "@/lib/data/guestsByEventID";
